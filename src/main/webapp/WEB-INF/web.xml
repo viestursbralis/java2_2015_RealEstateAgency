@@ -5,6 +5,13 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
+
+
+
+
     <servlet>
         <servlet-name>HelloWorldServlet</servlet-name>
         <servlet-class>lv.javaguru.java2.servlet.HelloWorldServlet</servlet-class>
@@ -40,10 +47,70 @@
         <servlet-class>lv.javaguru.java2.servlet.RedirectToJSPServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>agencyLogin</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.AgencyLogin</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>agencyLogin</servlet-name>
+        <!--<servlet-name>BeerSelect</servlet-name>-->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
     <servlet-mapping>
         <servlet-name>RedirectToJSPServlet</servlet-name>
+        <!--<servlet-name>BeerSelect</servlet-name>-->
         <url-pattern>/jsp</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AgencyLogin</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.RedirectToJSPServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <!--<servlet-name>RedirectToJSPServlet</servlet-name>-->
+        <servlet-name>AgencyLogin</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+<!-- -->
+    <servlet>
+        <servlet-name>AgencyClientChoiceRouter</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.AgencyClientsChoiceRouter</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <!--<servlet-name>RedirectToJSPServlet</servlet-name>-->
+        <servlet-name>AgencyClientChoiceRouter</servlet-name>
+        <url-pattern>/clientsChoice</url-pattern>
+    </servlet-mapping>
+<!--  -->
+
+    <servlet>
+        <servlet-name>RegisterNewClient</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.NewClientRegisterController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <!--<servlet-name>RedirectToJSPServlet</servlet-name>-->
+        <servlet-name>RegisterNewClient</servlet-name>
+        <url-pattern>/newClientRegister</url-pattern>
+    </servlet-mapping>
+<!--  -->
+
+    <servlet>
+        <servlet-name>NewPostRegisterController</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.NewPostRegisterController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <!--<servlet-name>RedirectToJSPServlet</servlet-name>-->
+        <servlet-name>NewPostRegisterController</servlet-name>
+        <url-pattern>/newPostRegisterController</url-pattern>
+    </servlet-mapping>
+
 
 
 </web-app>

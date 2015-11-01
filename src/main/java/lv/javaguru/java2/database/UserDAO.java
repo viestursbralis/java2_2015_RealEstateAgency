@@ -11,12 +11,15 @@ public interface UserDAO {
 
     void create(User user) throws DBException;
 
-    User getById(Long id) throws DBException;
+    User getUserById(Long id) throws DBException;
 
     void delete(Long id) throws DBException;
 
     void update(User user) throws DBException;
 
     List<User> getAll() throws DBException;
+
+    User findUserByCredentials(String username, String password)throws DBException;
+
 
 }

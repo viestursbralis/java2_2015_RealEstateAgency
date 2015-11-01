@@ -29,7 +29,7 @@ public class DAOImpl {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("Exciption while registering JDBC driver!");
+            System.out.println("Exception while registering JDBC driver!");
             e.printStackTrace();
         }
     }
@@ -43,7 +43,7 @@ public class DAOImpl {
             userName = properties.getProperty("userName");
             password = properties.getProperty("password");
         } catch (IOException e){
-            System.out.println("Exciption while reading JDBC configuration from file = " + DB_CONFIG_FILE);
+            System.out.println("Exception while reading JDBC configuration from file = " + DB_CONFIG_FILE);
             e.printStackTrace();
         }
     }
@@ -52,7 +52,7 @@ public class DAOImpl {
         try{
             return DriverManager.getConnection(dbUrl, userName, password);
         } catch (SQLException e) {
-            System.out.println("Exciption while getting connection to database");
+            System.out.println("Exception while getting connection to database");
             e.printStackTrace();
             throw new DBException(e);
         }
@@ -64,7 +64,7 @@ public class DAOImpl {
                 connection.close();
             }
         } catch (SQLException e) {
-            System.out.println("Exciption while closing connection to database");
+            System.out.println("Exception while closing connection to database");
             e.printStackTrace();
             throw new DBException(e);
         }

@@ -29,7 +29,7 @@ public class UserDAOImplTest {
 
         userDAO.create(user);
 
-        User userFromDB = userDAO.getById(user.getUserId());
+        User userFromDB = userDAO.getUserById(user.getUserId());
         assertNotNull(userFromDB);
         assertEquals(user.getUserId(), userFromDB.getUserId());
         assertEquals(user.getFirstName(), userFromDB.getFirstName());

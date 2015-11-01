@@ -21,8 +21,8 @@ public class HelloWorldServlet extends HttpServlet {
 
 		// Prepare output html
 		PrintWriter out = resp.getWriter();
-		out.println("<h1>" + "Hello WWW world from Java!" + "</h1>");		
-		out.println("<h1>" + "Hello WWW world from Java!" + "</h1>");
+		out.println("<h1>" + "Hello WWW world from Java, upsss....!" + "</h1>");
+		out.println("<h1>" + "Hello WWW world from Java, upsss....!" + "</h1>");
 	}
 
 }
