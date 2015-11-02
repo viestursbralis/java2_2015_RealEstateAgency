@@ -35,12 +35,7 @@ public class AgencyClientsChoiceRouter extends HttpServlet {
 
         String clientChoice = request.getParameter("clientsChoiceA");
 
-        response.setContentType("text/html");
 
-        // Prepare output html
-        PrintWriter out = response.getWriter();
-        out.println("<h1>" + "Value choosed by client is:" + "</h1>");
-        out.println("<h1>" + clientChoice + "</h1>");
 
 
 if(clientChoice.equals("1")){
@@ -48,7 +43,11 @@ if(clientChoice.equals("1")){
     view.forward(request, response);
 
 }
+        if(clientChoice.equals("3")){
+            RequestDispatcher view = request.getRequestDispatcher("/searchForSpecificProperty.jsp");
+            view.forward(request, response);
 
+        }
 
 
     }

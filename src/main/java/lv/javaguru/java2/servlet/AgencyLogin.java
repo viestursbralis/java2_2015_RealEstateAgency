@@ -57,43 +57,12 @@ public class AgencyLogin extends HttpServlet {
         }        catch (DBException e) {
             System.out.println("Error!");
         }
-        //request.setAttribute("userFirstName", user.getFirstName());
-        //request.setAttribute("userLastName", user.getLastName());
+
 
         RequestDispatcher view = request.getRequestDispatcher("/clientLoggedInFirstPage.jsp");
         view.forward(request, response);
 
 
-
-
-        //setListOfUserPropertiesMain(user);
-        /*try {
-            List<Property> propertiesByThisUser = propertyDao.findPropertyByClient(user);
-            user.setListOfProperties(propertiesByThisUser);
-        }catch (DBException e) {
-            System.out.println("Error!");
-        }*/
-
-
-        /*System.out.println("This is current (logged in) user:");
-        System.out.println(user);
-
-        String loggedInUserFirstName=user.getFirstName();
-        String loggedInUserLastName = user.getLastName();
-        List<Property>result =user.getListOfProperties();
-
-
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
-
-        out.println("<h1>" + "Logged in users first name:" + loggedInUserFirstName +"</h1>");
-        out.println("<h1>" + "Logged in users last name:" + loggedInUserLastName +"</h1>");
-        out.println("List of properties <br>");
-
-        for(Property prop:result){
-            out.println("<3h>" + prop +" <h3>");
-        }*/
     }
 }
 
