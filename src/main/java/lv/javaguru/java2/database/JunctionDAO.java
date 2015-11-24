@@ -9,4 +9,5 @@ public interface JunctionDAO {
 
     void propertyOwnerJunction(Long propertyId, List<Long> ownersId) throws DBException;
     void propertyUtilitiesJunction(Long propertyId, List<Long> utilitiesId) throws DBException;
+    void propertyPhotosJunction(Long propertyID, Long photoId) throws DBException;
 }

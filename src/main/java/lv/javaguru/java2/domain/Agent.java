@@ -12,6 +12,7 @@ public class Agent {
     private String agentBiography;
     private Statuss agentStatuss;
     private String agentEmail;
+
     private String agentPassword;
     private List<User> agentUsers;
 

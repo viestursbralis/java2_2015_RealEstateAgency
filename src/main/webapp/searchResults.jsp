@@ -14,17 +14,17 @@
 <body>
 
 
-<p>You are logged in as:<%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %></p>
+<p>You are logged in as: <%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %></p>
 
 
-<p>You agent is <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
+<p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <label>There are a list of properties which match your search criteria:</label>
 <table border="1">
   <tr><td>Category</td><td>Property description</td><td>Price</td><td>Adress</td><td>LivingArea</td><td>Bedrooms</td>
     <td>LandArea</td><td>Contact info</td></tr>
 
 </table>
-
+<a href="<%=request.getContextPath()%>/returnToFirstPage">Return to main page</a>
 </body>
 </html>
 

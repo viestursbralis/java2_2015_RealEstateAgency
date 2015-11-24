@@ -24,9 +24,9 @@
 <p>You are logged in as:<%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %></p>
 
 
-<p>You agent is <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
+<p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <label>Choose from available options and press "Submit":</label>
-<form action="clientsChoice" method="POST">
+<form action="<%=request.getContextPath()%>/clientsChoice" method="POST">
 <div>
   <label><input  type="radio" name="clientsChoiceA"  value="1">Add a new RealEstate to the database</label><br>
   <label><input  type="radio" name="clientsChoiceA"  value="2">List all RealEstate's in the database</label><br>

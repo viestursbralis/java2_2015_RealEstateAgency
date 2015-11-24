@@ -74,26 +74,23 @@ if(userName!=null&&userPassword!=null){
     }
 
     if(request.getParameter("addUtility")!=null && request.getParameter("addUtility").equals("Register!")){
-        Long i=null;
-        Long cg=null;
-        Long ch=null;
-        Long cw=null;
-        Long cs=null;
-        String internet=(String)request.getParameter("internet");
+        Long i=new Long(0);
+        Long cg=new Long(0);
+        Long ch=new Long(0);
+        Long cw=new Long(0);
+        Long cs=new Long(0);
+        Long checked= new Long(1);
 
-        if(internet.equals("1")){i=Long.parseLong(internet, 10);}
 
-        String city_gas=(String)(request.getParameter("city_gas"));
-        if(city_gas.equals("1")){cg=Long.parseLong(city_gas, 10); }
+        if(request.getParameter("internet")!=null){i=checked;}
 
-        String city_heat=(String)(request.getParameter("city_heat"));
-        if(city_heat.equals("1")){ch=Long.parseLong(city_heat, 10);}
+        if(request.getParameter("city_gas")!=null) {cg=checked;}
 
-        String city_water=(String)(request.getParameter("city_water"));
-        if(city_water.equals("1")){cw=Long.parseLong(city_water, 10);}
+        if(request.getParameter("city_heat")!=null){ch=checked; }
 
-        String city_sewer=(String)request.getParameter("city_sewer");
-        if(city_sewer.equals("1")){cs=Long.parseLong(city_sewer, 10);}
+        if(request.getParameter("city_water")!=null){cw=checked; }
+
+        if(request.getParameter("city_sewer")!=null){cs=checked; }
 
 
 List<Long>utilities=new ArrayList<>();
@@ -136,7 +133,7 @@ List<Long>utilities=new ArrayList<>();
             propertyUtils=propertyUtilityDao.createUtility(utilities);
 
 
-            property.setPropertyUtilities(propertyUtils);
+            property.setPropertyUtilities(propertyUtils);//list of utilities is set to this property;
         }
         catch (DBException e) {
             System.out.println("Error!");
@@ -176,8 +173,9 @@ List<Long>utilities=new ArrayList<>();
 
         List<Long> propertyUtilitiesId = new ArrayList<>();
 
-        List<Utility> propertyUtilities = new ArrayList<>();
-        propertyUtilities = property.getPropertyUtilities();
+        List<Utility> propertyUtilities = property.getPropertyUtilities();
+
+
         for (Utility utils : propertyUtilities) {
             propertyUtilitiesId.add(utils.getUtilityId());
 
@@ -189,7 +187,7 @@ List<Long>utilities=new ArrayList<>();
         }
     /******************************************************************************************************/
 
-        String postSuccessfull="Your post successfully registered to our database! Wait calls from clients!";
+        String postSuccessfull="Your post successfully registered in our database! Wait calls from clients!";
         session.setAttribute("postSuccessfull", postSuccessfull);
         RequestDispatcher view = request.getRequestDispatcher("/clientLoggedInFirstPage.jsp");
         view.forward(request, response);

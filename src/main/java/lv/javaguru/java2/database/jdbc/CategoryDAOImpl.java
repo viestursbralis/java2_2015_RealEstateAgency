@@ -2,20 +2,18 @@ package lv.javaguru.java2.database.jdbc;
 
 import lv.javaguru.java2.database.CategoryDAO;
 import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.database.UtilityDAO;
 import lv.javaguru.java2.domain.Category;
 import lv.javaguru.java2.domain.CategoryName;
-import lv.javaguru.java2.domain.Utility;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Viesturs on 10/24/2015.
  */
+@Repository
 public class CategoryDAOImpl extends DAOImpl implements CategoryDAO {
 
     public Category findCategoryByName(CategoryName categoryName) throws DBException {

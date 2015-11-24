@@ -2,8 +2,8 @@ package lv.javaguru.java2.database.jdbc;
 
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.PropertyOwnerDAO;
-import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.PropertyOwner;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 /**
  * Created by Viesturs on 10/23/2015.
  */
+
+@Repository
 public class PropertyOwnerDAOImpl extends DAOImpl implements PropertyOwnerDAO {
     public Long create(PropertyOwner propertyOwner) throws DBException {
         if (propertyOwner == null) {

@@ -12,7 +12,9 @@
   <title></title>
 </head>
 <body>
-<p>You are logged in as:</p><%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %>
+<p>You are logged in as: <%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %></p>
+
+
 <p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <label>Specify what kind of property are you looking for:</label>
 <form action="searchController" method="POST">

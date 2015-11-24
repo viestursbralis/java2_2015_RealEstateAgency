@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page trimDirectiveWhitespaces="true"%>
+
 <html>
 <head>
     <title></title>
@@ -17,7 +19,7 @@
 <p>Data from previous page:<%=session.getAttribute("category")%></p>
 <fieldset>
   <p>New property owner (contactperson) register:</p>
-  <form action="newPostRegisterController" method="POST">
+  <form action="<%=request.getContextPath()%>/newPost" method="POST">
     <p>Enter your data</p>
     <label for="firstName">First name:</label>
     <input type="text" id="firstName" name="firstName"  required/><br>
@@ -37,6 +39,6 @@
 
   </form>
 </fieldset>
-
+<a href="<%=request.getContextPath()%>/returnToFirstPage">Return to main page</a>
 </body>
 </html>

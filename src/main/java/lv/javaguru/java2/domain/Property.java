@@ -19,6 +19,8 @@ public class Property {
     private Long area;
     private int countOfBedrooms;
     private Long landArea;
+    private List<Photo> propertyPhotos;
+
 
 
     public Long getPropertyId() {
@@ -93,6 +95,14 @@ public class Property {
     public User getClient() { return client;  }
 
     public void setClient(User client) { this.client = client;}
+
+    public List<Photo> getPropertyPhotos() {
+        return propertyPhotos;
+    }
+
+    public void setPropertyPhotos(List<Photo> propertyPhotos) {
+        this.propertyPhotos = propertyPhotos;
+    }
 
     public String toString() {
         return "Property Id: " + propertyId + ", Property description: " + propertyDescription + ", Category: " +

@@ -3,11 +3,9 @@ package lv.javaguru.java2.database;
 /**
  * Created by Viesturs on 10/17/2015.
  */
-import java.util.List;
-import java.util.Optional;
-
-import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.domain.*;
+
+import java.util.List;
 
 public interface PropertyDAO {
     Long create(Property property) throws DBException;
@@ -34,10 +32,11 @@ public interface PropertyDAO {
     List<Property> findPropertyByClientId( Long clientId) throws DBException;
     List<Agent>findAllAgents() throws DBException;
     List<Agent>findAllActiveAgents(List<Property>properties) throws DBException;
-
+    List<Photo>findAllPropertyPhotoss(Long propertyId) throws DBException;
 
 
     void insert(Property property) throws DBException;
+    Long insertPhoto(String photoName) throws DBException;
     void update(Property property);
     void delete(Long propertyId) throws DBException;
 }

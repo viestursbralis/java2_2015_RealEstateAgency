@@ -2,22 +2,22 @@ package lv.javaguru.java2.database.jdbc;
 
 import lv.javaguru.java2.database.AgentDAO;
 import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Agent;
 import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.Statuss;
 import lv.javaguru.java2.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Viktor on 01/07/2014.
- */
+@Repository
 public class UserDAOImpl extends DAOImpl implements UserDAO {
-AgentDAO agentDAO=new AgentDAOImpl();
+@Autowired
+    AgentDAO agentDAO;
 
 
     @Override
@@ -79,7 +79,20 @@ AgentDAO agentDAO=new AgentDAOImpl();
                 user.setLastName(resultSet.getString("USER_PASSWORD"));
                 user.setLastName(resultSet.getString("USER_EMAIL"));
                 user.setStatuss(Statuss.valueOf(resultSet.getString("USER_STATUSS")));
+                Long agentId = (resultSet.getLong("AGENT_ID"));
+                String sql2="select a.* from agent AS a where a.AGENT_ID =" + agentId;
+                ResultSet resultSet2=st2.executeQuery(sql2);
 
+                while(resultSet2.next()){
+                    Agent agent = new Agent();
+                    agent.setAgentFirstName(resultSet2.getString("AGENT_FIRST_NAME"));
+                    agent.setAgentLastName(resultSet2.getString("AGENT_LAST_NAME"));
+                    agent.setAgentStatuss(Statuss.valueOf(resultSet2.getString("AGENT_STATUSS")));
+                    agent.setAgentBiography(resultSet2.getString("AGENT_BIOGRAPHY"));
+                    agent.setAgentEmail(resultSet2.getString("AGENT_EMAIL"));
+                    agent.setAgentPassword(resultSet2.getString("AGENT_PASSWORD"));
+                    user.setAgent(agent);
+                }
 
                 }
 
@@ -172,6 +185,7 @@ AgentDAO agentDAO=new AgentDAOImpl();
       try {
 
           connection = getConnection();
+          Statement st0 = connection.createStatement();
           PreparedStatement statement = connection.prepareStatement(sql);
           ResultSet resultSet = statement.executeQuery();
           while (resultSet.next()) {
@@ -184,7 +198,9 @@ AgentDAO agentDAO=new AgentDAOImpl();
               user.setUserEmail(resultSet.getString("USER_EMAIL"));
               user.setPassword(resultSet.getString("USER_PASSWORD"));
               Long userId=resultSet.getLong("USER_ID");
-              Long agentId = resultSet.getLong("USER_ID");
+
+
+              Long agentId = resultSet.getLong("AGENT_ID");
               Agent agent = new Agent();
               agent=agentDAO.getAgentById(agentId);
               user.setAgent(agent);

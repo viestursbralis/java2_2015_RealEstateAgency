@@ -6,17 +6,18 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page trimDirectiveWhitespaces="true"%>
 <html>
 <head>
   <title></title>
 </head>
 <body>
 <p>You are logged in as:</p><%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %>
-<p>You agent is <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
+<p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <label>To post a new advertisement please fill out a form:</label>
-<form action="newPostRegisterController" method="POST">
+<form action="<%=request.getContextPath()%>/newPost" method="POST">
 
-  <p>Select in which category do you want to insert Your add:</p>
+  Select in which category do you want to insert Your add:<br/>
   <select name="postType" required>
     <option value="CONDO_FOR_RENT"> CONDO_FOR_RENT </option>
     <option value="CONDO_FOR_SALE"> CONDO_FOR_SALE </option>
@@ -29,23 +30,23 @@
       </select>
   <br/><br/>
 
-
+Short description:<br>
   <textarea name="description" id="description" title="Text of your advertisement:" cols="30"  rows="5"
-            maxlength="200"  placeholder="Text of your advertisement" required>  </textarea>
+            maxlength="200"  placeholder="Text of your advertisement" required>  </textarea></br>
 
-  <p>Price:</p>
-<input type="text" name="price" id="price" required>
-  <p>Adress:</p>
-  <input type="text" name="adress" id="adress" required>
-  <p>Living area:</p>
-  <input type="text" name="livingArea" id="livingArea" required>
-  <p>Count of bedrooms:</p>
-  <input type="number" name="countOfBedrooms" id="countOfBedrooms" required>
-  <p>Land area:</p>
-  <input type="text" name="landArea" id="landArea" required>
+  Price:
+<input type="text" name="price" id="price" required></br>
+  Adress:
+  <input type="text" name="adress" id="adress" required></br>
+  Living area:
+  <input type="text" name="livingArea" id="livingArea" required></br>
+  Count of bedrooms:
+  <input type="number" name="countOfBedrooms" id="countOfBedrooms" required></br>
+  Land area:
+  <input type="text" name="landArea" id="landArea" required></br>
 
-  <input type ="submit" name="addProperty" value="Next page">
+  <input type ="submit" name="addProperty" value="Next page"></br>
 </form>
-
+<a href="<%=request.getContextPath()%>/returnToFirstPage">Return to main page</a>
 </body>
 </html>

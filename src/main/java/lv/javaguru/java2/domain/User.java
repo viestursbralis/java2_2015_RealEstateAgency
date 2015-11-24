@@ -1,6 +1,5 @@
 package lv.javaguru.java2.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +13,7 @@ public class User {
     private String userEmail;
     private String password;
     private Statuss statuss;
+
     private Agent agent;
     List<Property> listOfProperties;
 

@@ -10,23 +10,20 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
- import java.sql.DriverManager;
- import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
+@Repository
 
 public class PropertyDAOImpl extends DAOImpl implements PropertyDAO {
-AgentDAO agentDao=new AgentDAOImpl();
-    UserDAO userDao= new UserDAOImpl();
+    @Autowired
+    AgentDAO agentDao;
+    @Autowired
+    UserDAO userDao;
 /*************************************************************************************************************/
 public Long create(Property property) throws DBException {
     if (property == null) {
@@ -155,7 +152,7 @@ return lastInsertedPropertyID;
   /************************************************************************************************/
   public Property findPropertyById( Long propertyId) throws DBException {
       Property propertyById = new Property();
-      String sql1="select * from property where PROPERY_ID = '"+propertyId +" '";
+      String sql1="select * from property where PROPERTY_ID = '"+propertyId +" '";
 
       Connection connection = null;
 
@@ -165,6 +162,7 @@ return lastInsertedPropertyID;
           Statement st1 = connection.createStatement();
           Statement st2 = connection.createStatement();
           Statement st3 = connection.createStatement();
+          Statement st4 = connection.createStatement();
           Statement stAgent = connection.createStatement();
 
           ResultSet resultSet1=st1.executeQuery(sql1);
@@ -177,6 +175,9 @@ return lastInsertedPropertyID;
               List<Utility>propertyUtilities=new ArrayList<>();
               Utility utility = new Utility ();
               propertyById.setPropertyId(resultSet1.getLong("PROPERTY_ID"));
+
+
+
               propertyById.setPropertyDescription(resultSet1.getString("PROPERTY_DESCRIPTION"));
               Long categoryId=resultSet1.getLong("CATEGORY_ID");
               String sqlCat="select c.* from category AS c where CATEGORY_ID="+categoryId;
@@ -237,7 +238,7 @@ return lastInsertedPropertyID;
 
 /********************************************************************************************/
 public List<Property> findPropertyById(List<Property> properties, Long propertyId) throws DBException {
-    List<Property> propertyById= new ArrayList();
+    List<Property> propertyById= new ArrayList<>();
 
     propertyById=properties.stream()
             .filter((Property p) -> p.getPropertyId() == propertyId)
@@ -547,6 +548,97 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
 
         List<Property> clientProperties = new ArrayList<>();
         Long clientId=client.getUserId();
+        String sql1="select * from property where USER_ID = '"+clientId +"'";
+
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            Statement st0 = connection.createStatement();
+            Statement st1 = connection.createStatement();
+            Statement st2 = connection.createStatement();
+            Statement st3 = connection.createStatement();
+
+
+            ResultSet resultSet1=st1.executeQuery(sql1);
+
+            while (resultSet1.next()) {
+                Property propertyByClient = new Property();
+
+
+                List<PropertyOwner> propertyOwners=new ArrayList<>();
+                List<Utility>propertyUtilities=new ArrayList<>();
+                Utility utility = new Utility ();
+                propertyByClient.setPropertyId(resultSet1.getLong("PROPERTY_ID"));
+                Long propertyId=resultSet1.getLong("PROPERTY_ID");
+                propertyByClient.setPropertyDescription(resultSet1.getString("PROPERTY_DESCRIPTION"));
+                Long categoryId=resultSet1.getLong("CATEGORY_ID");
+                String sqlCat="select c.* from category AS c where CATEGORY_ID="+categoryId;
+                ResultSet resultSetCat=st0.executeQuery(sqlCat);
+                while(resultSetCat.next()){Category category = new Category();
+                    category.setCategoryId(resultSetCat.getLong("CATEGORY_ID"));
+                    category.setCategoryName(CategoryName.valueOf(resultSetCat.getString("CATEGORY_SHORT_NAME")));
+                    category.setCategoryDescription(resultSetCat.getString("CATEGORY_DESCRIPTION"));
+                    propertyByClient.setCategory(category);
+                }
+
+
+                propertyByClient.setPrice(resultSet1.getDouble("PRICE"));
+                propertyByClient.setAdress(resultSet1.getString("ADRESS"));
+                propertyByClient.setArea(resultSet1.getLong("AREA"));
+                propertyByClient.setCountOfBedrooms(resultSet1.getInt("COUNT_OF_BEDROOMS"));
+                propertyByClient.setLandArea(resultSet1.getLong("LAND_AREA"));
+
+                String sql2="select po.* from property_owner_junction AS poj " +
+                        "inner join property_owner AS po on poj.PROPERTY_OWNER_ID = " +
+                        " po.PROPERTY_OWNER_ID where poj.PROPERTY_ID = " + propertyId;
+                ResultSet resultSet2=st2.executeQuery(sql2);
+
+                while(resultSet2.next()){
+                    PropertyOwner owner = new PropertyOwner();
+                    owner.setFirstName(resultSet2.getString("FIRST_NAME"));
+                    owner.setLastName(resultSet2.getString("LAST_NAME"));
+                    owner.setOwnerEmail(resultSet2.getString("OWNER_EMAIL"));
+                    owner.setOwnerPhone(resultSet2.getString("OWNER_CODE"));
+                    propertyOwners.add(owner);
+                }
+                propertyByClient.setPropertyOwners(propertyOwners);
+
+                String sql3="select u.* from property_utility_junction AS puj " +
+                        "inner join utility AS u on puj.UTILITY_ID = " +
+                        " u.UTILITY_ID where puj.PROPERTY_ID = " + propertyId;
+
+                ResultSet resultSet3=st3.executeQuery(sql3);
+                while(resultSet3.next()){
+                    Utility propertyUtility = new Utility();
+                    propertyUtility.setUtilityId(resultSet3.getLong("UTILITY_ID"));
+                    propertyUtility.setUtilityDescription(resultSet3.getString("UTILITY_DESCRIPTION"));
+                    propertyUtilities.add(propertyUtility);
+                }
+                propertyByClient.setPropertyUtilities(propertyUtilities);
+                propertyByClient.setClient(client);
+                clientProperties.add(propertyByClient);
+
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+
+
+
+        return clientProperties;
+
+    }
+
+
+    /*************************************************************************************************/
+    public List<Property> findPropertyByClientId( Long clientId) throws DBException {
+
+
+        List<Property> propertiesByClient = new ArrayList<>();
+
         String sql1="select * from property where USER_ID = '"+clientId +" '";
 
         Connection connection = null;
@@ -557,13 +649,13 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
             Statement st1 = connection.createStatement();
             Statement st2 = connection.createStatement();
             Statement st3 = connection.createStatement();
-            Statement stAgent = connection.createStatement();
+
 
             ResultSet resultSet1=st1.executeQuery(sql1);
 
             while (resultSet1.next()) {
                 Property propertyByClient = new Property();
-                Agent agent =new Agent();
+
 
                 List<PropertyOwner> propertyOwners=new ArrayList<>();
                 List<Utility>propertyUtilities=new ArrayList<>();
@@ -611,8 +703,8 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
                     propertyUtilities.add(propertyUtility);
                 }
                 propertyByClient.setPropertyUtilities(propertyUtilities);
-                propertyByClient.setClient(client);
-                clientProperties.add(propertyByClient);
+               // propertyByClient.setClient(client);//in this case client is set outside this method;
+                propertiesByClient.add(propertyByClient);
 
             }
         } catch (SQLException ex) {
@@ -623,20 +715,8 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
 
 
 
-        return clientProperties;
 
-    }
-
-
-    /*************************************************************************************************/
-    public List<Property> findPropertyByClientId( Long clientId) throws DBException {
-        List<Property> propertiesByClientId= new ArrayList<>();
-
-
-
-
-
-        return propertiesByClientId;
+        return propertiesByClient;
     }
 
 
@@ -710,7 +790,70 @@ String sql="insert into property (CATEGORY_ID, PROPERTY_DESCRIPTION, PRICE, " +
          }
 
         }
+/*********************************************************************************************************/
+public Long insertPhoto(String photoName) throws DBException{
 
+        Long lastInsertedPhotoID = null;
+        String sql="insert into photos (PHOTO_NAME)"+"values(?)";
+        Connection connection = null;
+
+    try {
+
+        connection = getConnection();
+        PreparedStatement preparedStatement =
+                connection.prepareStatement("insert into photos values (default, ?)",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, photoName);
+
+
+
+        preparedStatement.executeUpdate();
+        ResultSet rs = preparedStatement.getGeneratedKeys();
+        if (rs.next()){
+            lastInsertedPhotoID=rs.getLong(1);
+              }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    } finally {
+        closeConnection(connection);
+    }
+return lastInsertedPhotoID;
+}
+
+/*********************************************************************************************/
+public List<Photo>findAllPropertyPhotoss(Long propertyId) throws DBException {
+    List<Photo>propertyPhotos=new ArrayList<>();
+    String sql ="select ph.* from property_photos_junction as phj inner join photos as ph on phj.PHOTO_ID=" +
+            "ph.PHOTO_ID where phj.PROPERTY_ID="+propertyId;
+
+/*************************************************************************************************************
+    String sql2="select po.* from property_owner_junction AS poj " +
+            "inner join property_owner AS po on poj.PROPERTY_OWNER_ID = " +
+            " po.PROPERTY_OWNER_ID where poj.PROPERTY_ID = " + propertyId;
+
+    ****************************************************************************************/
+
+    Connection connection = null;
+    try {
+        connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            Photo photo = new Photo();
+            photo.setPhotoId(resultSet.getLong("PHOTO_ID"));
+            photo.setPhotoName(resultSet.getString("PHOTO_NAME"));
+            propertyPhotos.add(photo);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    } finally {
+        closeConnection(connection);
+    }
+
+   return propertyPhotos;
+}
+
+/****************************************************************************************************/
 
      public void update(Property property) {
          }

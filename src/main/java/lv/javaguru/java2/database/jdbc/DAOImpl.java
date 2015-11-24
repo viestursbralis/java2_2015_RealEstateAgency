@@ -1,6 +1,7 @@
 package lv.javaguru.java2.database.jdbc;
 
 import lv.javaguru.java2.database.DBException;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import java.util.Properties;
 /**
  * Created by Viktor on 01/07/2014.
  */
+
+@Repository
 public class DAOImpl {
 
     private static final String DB_CONFIG_FILE = "database.properties";

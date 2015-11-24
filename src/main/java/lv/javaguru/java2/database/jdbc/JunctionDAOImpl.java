@@ -2,6 +2,7 @@ package lv.javaguru.java2.database.jdbc;
 
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.JunctionDAO;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +11,9 @@ import java.util.List;
 /**
  * Created by Viesturs on 10/24/2015.
  */
+
+
+@Repository
 public class JunctionDAOImpl extends DAOImpl implements JunctionDAO {
 
     @Override
@@ -82,7 +86,37 @@ public class JunctionDAOImpl extends DAOImpl implements JunctionDAO {
          }
 
      }
+/*****************************************************************************************************/
+@Override
+public void propertyPhotosJunction(Long propertyId, Long photoId)throws DBException{
+    if (propertyId == null || photoId==null) {
+        throw new NullPointerException();
+    }
 
+    Connection connection = null;
+
+
+    try {
+        connection = getConnection();
+
+
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("insert into property_photos_junction values (?, ?)");
+            preparedStatement.setLong(1, propertyId);
+            preparedStatement.setLong(2, photoId);
+            preparedStatement.executeUpdate();
+
+    } catch (Throwable e) {
+        System.out.println("Exception while execute JunctionDAOImpl.propertyUtilitiesJunction()");
+        e.printStackTrace();
+        throw new DBException(e);
+    } finally {
+        closeConnection(connection);
+    }
+
+}
+
+    /*******************************************************************************************************/
 
 
 }

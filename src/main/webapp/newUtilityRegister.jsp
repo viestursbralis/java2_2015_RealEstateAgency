@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page trimDirectiveWhitespaces="true"%>
+
 <html>
 <head>
   <title></title>
@@ -14,8 +16,8 @@
 <p>You are logged in as:<%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %></p>
 <p>You agent is <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <fieldset>
-  <p>New property utiliies register:</p>
-  <form action="newPostRegisterController" method="POST">
+  <p>New property utilities register:</p>
+  <form action="<%=request.getContextPath()%>/newPost" method="POST">
     <p>Check which utility applies:</p>
 
     <input id="internet" name="internet" value="1" type="checkbox">
@@ -29,10 +31,10 @@
     <input id="city_sewer" name="city_sewer" value="1" type="checkbox">
     <label for="city_sewer">City sewer</label>
 
-      <input type ="submit" name="addUtility" value="Register!">
+      <input type ="submit" name="addUtility" value="Next page">
 
   </form>
 </fieldset>
-
+<a href="<%=request.getContextPath()%>/returnToFirstPage">Return to main page</a>
 </body>
 </html>

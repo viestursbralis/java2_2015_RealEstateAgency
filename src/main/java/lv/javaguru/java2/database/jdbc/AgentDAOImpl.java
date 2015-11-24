@@ -4,7 +4,7 @@ import lv.javaguru.java2.database.AgentDAO;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.domain.Agent;
 import lv.javaguru.java2.domain.Statuss;
-import lv.javaguru.java2.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by Viesturs on 10/22/2015.
  */
+@Repository
 public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
 
 
@@ -30,7 +31,7 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
             try {
                 connection = getConnection();
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement("insert into USERS values (default, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                        connection.prepareStatement("insert into agent values (default, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, agent.getAgentFirstName());
                 preparedStatement.setString(2, agent.getAgentLastName());
                 preparedStatement.setString(3, agent.getAgentStatuss().name());

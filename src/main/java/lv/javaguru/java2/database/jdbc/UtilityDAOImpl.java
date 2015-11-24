@@ -3,6 +3,7 @@ package lv.javaguru.java2.database.jdbc;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UtilityDAO;
 import lv.javaguru.java2.domain.Utility;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,8 @@ import java.util.List;
 /**
  * Created by Viesturs on 10/24/2015.
  */
+
+@Repository
 public class UtilityDAOImpl extends DAOImpl implements UtilityDAO {
 
     public List<Utility> createUtility(List<Long> utilityId) throws DBException {
