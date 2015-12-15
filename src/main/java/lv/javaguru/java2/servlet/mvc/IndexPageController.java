@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
-public class IndexPageController implements MVCController {
+public class IndexPageController implements TransactionalController {
 
     public MVCModel execute(HttpServletRequest request) {
 

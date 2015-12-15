@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,11 @@ import java.util.Iterator;
 import java.util.List;
 
 @Controller
-public class ImageUploadController3 implements MVCController {
+public class ImageUploadController3 implements TransactionalController {
 
     /*************************************************************************/
     @Autowired
+    @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
     @Autowired
     private JunctionDAO propertyPhotosDao;

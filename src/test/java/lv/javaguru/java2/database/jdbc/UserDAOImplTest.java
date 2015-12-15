@@ -1,14 +1,14 @@
 package lv.javaguru.java2.database.jdbc;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
+import lv.javaguru.java2.database.DBException;
+import lv.javaguru.java2.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import lv.javaguru.java2.database.DBException;
-import lv.javaguru.java2.domain.User;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class UserDAOImplTest {
@@ -27,7 +27,7 @@ public class UserDAOImplTest {
     public void testCreate() throws DBException {
         User user = createUser("F", "L");
 
-        userDAO.create(user);
+        userDAO.createNewUserInDatabase(user);
 
         User userFromDB = userDAO.getUserById(user.getUserId());
         assertNotNull(userFromDB);
@@ -40,9 +40,9 @@ public class UserDAOImplTest {
     public void testMultipleUserCreation() throws DBException {
         User user1 = createUser("F1", "L1");
         User user2 = createUser("F2", "L2");
-        userDAO.create(user1);
-        userDAO.create(user2);
-        List<User> users = userDAO.getAll();
+        userDAO.createNewUserInDatabase(user1);
+        userDAO.createNewUserInDatabase(user2);
+        List<User> users = userDAO.getAllUsers();
         assertEquals(2, users.size());
     }
 

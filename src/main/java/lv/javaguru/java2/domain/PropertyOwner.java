@@ -1,18 +1,32 @@
 package lv.javaguru.java2.domain;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Viesturs on 10/17/2015.
  */
-public class PropertyOwner {
-    private Long id;
 
+@Entity
+@Table(name="property_owner")
+public class PropertyOwner {
+    @Column(name="PROPERTY_OWNER_ID", columnDefinition="int")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    @Column(name="FIRST_NAME")
     private String firstName;
+    @Column(name="LAST_NAME")
     private String lastName;
+    @Column(name="OWNER_EMAIL")
     private String ownerEmail;
+    @Column(name="OWNER_CODE")
     private String ownerPhone;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "propertyOwners")
     List<Property> property;
+
+
+
     public Long getId() {
         return id;
     }

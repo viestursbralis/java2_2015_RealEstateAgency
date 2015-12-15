@@ -8,6 +8,7 @@ import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.domain.Photo;
 import lv.javaguru.java2.domain.Property;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class QuickSearchController implements MVCController {
+public class QuickSearchController implements TransactionalController {
 
     @Autowired
+    @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
 
 
@@ -42,7 +44,8 @@ public class QuickSearchController implements MVCController {
                 prop=propertyDao.findPropertyById(idToSee1);
 
                 session.setAttribute("prop", prop);
-                List<Photo> propertyPhotos = propertyDao.findAllPropertyPhotoss(idToSee1);
+                //List<Photo> propertyPhotos = propertyDao.findAllPropertyPhotoss(idToSee1);
+                List<Photo> propertyPhotos = prop.getPropertyPhotos();
                 List<String> photoNames = new ArrayList<>();
                 for(Photo photo:propertyPhotos){
                     String photoName=photo.getPhotoName();

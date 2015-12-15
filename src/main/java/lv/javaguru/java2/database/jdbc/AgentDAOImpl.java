@@ -2,14 +2,13 @@ package lv.javaguru.java2.database.jdbc;
 
 import lv.javaguru.java2.database.AgentDAO;
 import lv.javaguru.java2.database.DBException;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Agent;
 import lv.javaguru.java2.domain.Statuss;
+import lv.javaguru.java2.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
  */
 @Repository
 public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
-
+        UserDAO userDao = new UserDAOImpl();
 
         @Override
         public void create(Agent agent) throws DBException {
@@ -55,9 +54,10 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
         @Override
         public Agent getAgentById(Long id) throws DBException {
             Connection connection = null;
-
+            List<User>users = new ArrayList<>();
             try {
                 connection = getConnection();
+                Statement st0 = connection.createStatement();
                 PreparedStatement preparedStatement = connection
                         .prepareStatement("select * from AGENT where AGENT_ID = ?");
                 preparedStatement.setLong(1, id);
@@ -66,19 +66,29 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
                 if (resultSet.next()) {
                     agent = new Agent();
                     agent.setAgentId(resultSet.getLong("AGENT_ID"));
+                    Long agentId=resultSet.getLong("AGENT_ID");
                     agent.setAgentFirstName(resultSet.getString("AGENT_FIRST_NAME"));
                     agent.setAgentLastName(resultSet.getString("AGENT_LAST_NAME"));
                     agent.setAgentBiography(resultSet.getString("AGENT_BIOGRAPHY"));
                     //agent.setAgentStatuss(resultSet.getString("AGENT_STATUSS"));
                     agent.setAgentStatuss(Statuss.valueOf(resultSet.getString("AGENT_STATUSS")));
                     agent.setAgentPassword(resultSet.getString("AGENT_PASSWORD"));
+                    String sql2="select * from users where AGENT_ID =" + agentId;
+                    ResultSet resultSet2=st0.executeQuery(sql2);
 
+                    while(resultSet2.next()){
+                        Long userId = resultSet2.getLong("USER_ID");
+                        User user = userDao.getUserById(userId);
+                        users.add(user);
+
+                    }
+                    agent.setAgentUsers(users);
 
 
                 }
                 return agent;
             } catch (Throwable e) {
-                System.out.println("Exception while execute UserDAOImpl.getById()");
+                System.out.println("Exception while execute AgentDAOImpl.getAgentById()");
                 e.printStackTrace();
                 throw new DBException(e);
             } finally {
@@ -174,10 +184,13 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
 
                 connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql);
+                Statement st1 = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
 
                     agent.setAgentId(resultSet.getLong("AGENT_ID"));
+                    Long agentId = resultSet.getLong("AGENT_ID");
+
                     agent.setAgentFirstName(resultSet.getString("AGENT_FIRST_NAME"));
                     agent.setAgentLastName(resultSet.getString("AGENT_LAST_NAME"));
                     agent.setAgentStatuss(Statuss.valueOf(resultSet.getString("AGENT_STATUSS")));
@@ -185,8 +198,10 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
                     agent.setAgentEmail(resultSet.getString("AGENT_EMAIL"));
                     agent.setAgentPassword(resultSet.getString("AGENT_PASSWORD"));
 
-
                 }
+
+
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } finally {

@@ -35,7 +35,7 @@
 <p>Property details session=<%= session.getAttribute("propertyDetails") %></p>
 <script type="text/javascript">
   propertyDeletePopUp=window.open('propertyDeletePopUp.jsp',"_blank","directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no,width=600, height=280,top=200,left=200");
-
+<%session.removeAttribute("propertyDetails");%>
 </script>
 <% } %>
 

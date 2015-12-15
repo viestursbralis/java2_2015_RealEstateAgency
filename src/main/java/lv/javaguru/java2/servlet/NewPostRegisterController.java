@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +140,7 @@ List<Long>utilities=new ArrayList<>();
     PropertyDAO propertyDao=new PropertyDAOImpl();
         Long lastPropertyID=null;
         try {
-            lastPropertyID = propertyDao.create(property);//save property into database and
+            lastPropertyID = propertyDao.createProperty(property);//save property into database and
         }catch (DBException e) {
             System.out.println("Error!");
         }

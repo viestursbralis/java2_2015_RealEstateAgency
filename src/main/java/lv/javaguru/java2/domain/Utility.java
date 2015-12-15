@@ -1,10 +1,18 @@
 package lv.javaguru.java2.domain;
 
+import javax.persistence.*;
+
 /**
  * Created by Viesturs on 10/24/2015.
  */
+@Entity
+@Table(name="utility")
 public class Utility {
+    @Column(name="UTILITY_ID", columnDefinition="int")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long utilityId;
+    @Column(name="UTILITY_DESCRIPTION")
     private String utilityDescription;
 
     public Long getUtilityId() {return utilityId; }

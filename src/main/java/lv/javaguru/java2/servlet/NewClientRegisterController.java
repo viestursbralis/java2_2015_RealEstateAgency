@@ -12,7 +12,6 @@ import lv.javaguru.java2.database.jdbc.AgentDAOImpl;
 import lv.javaguru.java2.database.jdbc.PropertyDAOImpl;
 import lv.javaguru.java2.database.jdbc.UserDAOImpl;
 import lv.javaguru.java2.domain.Agent;
-import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.Statuss;
 import lv.javaguru.java2.domain.User;
 
@@ -23,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
 
 
@@ -69,7 +66,7 @@ private static AgentDAO agentDao = new AgentDAOImpl();
             newUser.setStatuss(Statuss.CLIENT);
         newUser.setAgent(lessBusyAgent);
             try {
-                userDao.create(newUser);
+                userDao.createNewUserInDatabase(newUser);
 
 
                 HttpSession session = request.getSession();

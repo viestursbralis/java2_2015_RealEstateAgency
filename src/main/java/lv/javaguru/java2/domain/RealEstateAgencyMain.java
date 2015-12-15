@@ -4,15 +4,15 @@ package lv.javaguru.java2.domain;
  * Created by Viesturs on 10/19/2015.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
-
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.database.jdbc.*;
 
-import static lv.javaguru.java2.domain.Statuss.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import static lv.javaguru.java2.domain.Statuss.CLIENT;
+import static lv.javaguru.java2.domain.Statuss.JUNIOR;
 
 
 public class RealEstateAgencyMain {
@@ -99,7 +99,7 @@ System.out.println("You have three options. You can browse our site without sign
                                     Property property = createPropertyMain();
                                     property.setClient(user);
 
-                                    Long lastPropertyID = propertyDao.create(property);//save property into database and
+                                    Long lastPropertyID = propertyDao.createProperty(property);//save property into database and
                                     // returns a last inserted Id in properties;
                                     //insert a list of property owners into database;
                                     List<PropertyOwner> propertyOwnersMain = property.getPropertyOwners();
@@ -138,7 +138,7 @@ System.out.println("You have three options. You can browse our site without sign
                                     System.out.println("Enter a property Category ID to search:");
                                     Long categoryId = scan.nextLong();
                                     List<Property> allProperties = findAllPropertiesMainList();
-                                    List<Property> propertiesByCategoryId = propertyDao.findPropertyByCategoryId(allProperties, categoryId);
+                                    List<Property> propertiesByCategoryId = propertyDao.findPropertyByCategoryId(categoryId);
                                     for (Property prop : propertiesByCategoryId) {
                                         System.out.println(prop.toString());
                                     }
@@ -148,7 +148,7 @@ System.out.println("You have three options. You can browse our site without sign
                                     System.out.println("Enter an upper level of your price range:");
                                     double max = scan.nextDouble();
                                     List<Property> propertiesByPriceRange = new ArrayList<>();
-                                    propertiesByPriceRange = propertyDao.findPropertyByPriceRange(allProperties, min, max);
+                                    propertiesByPriceRange = propertyDao.findPropertyByPriceRange(min, max);
                                     for (Property prop : propertiesByPriceRange) {
                                         System.out.println(prop);
                                     }
@@ -177,7 +177,7 @@ System.out.println("You have three options. You can browse our site without sign
                                     } catch (DBException e) {
                                         System.out.println("Error!");
                                     }
-                                    List<Property> propertiesByUtilities = propertyDao.findPropertiesWithCertainUtilities(allProperties, searchUtils);
+                                    List<Property> propertiesByUtilities = propertyDao.findPropertiesWithCertainUtilities(searchUtils);
                                     for (Property prop : propertiesByUtilities) {
                                         System.out.println(prop.toString());
                                     }
@@ -379,7 +379,7 @@ System.out.println("You have three options. You can browse our site without sign
                 newUser.setPassword(userPassword);
                 newUser.setStatuss(Statuss.CLIENT);
                 try {
-                    userDao.create(newUser);
+                    userDao.createNewUserInDatabase(newUser);
                 } catch (DBException e) {
                     System.out.println("Error!");
                 }
@@ -470,7 +470,7 @@ System.out.println("You have three options. You can browse our site without sign
 
 
     private static void createUserMain(User user) throws DBException {
-        userDao.create(user);
+        userDao.createNewUserInDatabase(user);
 
     }
 
@@ -602,7 +602,7 @@ System.out.println("Is there a broadband internet (cable) available:");
         Long userId=user.getUserId();
 System.out.println(userId);
 
-        listOfClientProperties=propertyDao.findPropertyByClient(allProperties, userId);
+        listOfClientProperties=propertyDao.findPropertyByClientId(userId);
         for (Property prop:listOfClientProperties){
             System.out.println(prop);
             System.out.println("********************");

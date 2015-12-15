@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class LogOutController implements MVCController {
+public class LogOutController implements TransactionalController {
 
 
     public MVCModel execute(HttpServletRequest request) {

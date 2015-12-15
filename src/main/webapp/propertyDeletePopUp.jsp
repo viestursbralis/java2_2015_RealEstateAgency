@@ -34,6 +34,7 @@
 <script type="text/javascript">
   function closeSelf(){
     self.close();
+    <%session.removeAttribute("propertyDetails");%>
     return true;
   }
 </script>
@@ -68,9 +69,9 @@
     </td><td></td></tr>
     <tr><td>Agent:<%= property.getClient().getAgent().getAgentFirstName()%>
       <%= property.getClient().getAgent().getAgentLastName()%> </td></tr>
-    <%--<tr><td><a href="<%=request.getContextPath()%>/deleteProperty?deleteFromPopup=true&ID=<%=property.getPropertyId()%>" >Delete</a></td></tr>--%>
+    <%--<tr><td><a href="<%=request.getContextPath()%>/deleteProperty?deleteFromPopup=true&ID=<%=property.getPropertyId()%>" >Delete</a></td></tr>
 
-    <%--<%=request.getContextPath()%>/deleteProperty?deleteFromPopup=true&ID=<%=property.getPropertyId()%> --%>
+    <%=request.getContextPath()%>/deleteProperty?deleteFromPopup=true&ID=<%=property.getPropertyId()%>--%>
   </table>
 
 </fieldset>

@@ -4,7 +4,9 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.domain.Photo;
 import lv.javaguru.java2.domain.Property;
+import lv.javaguru.java2.domain.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +14,12 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Controller
-public class ListAllPropertiesController implements MVCController {
+public class ListAllPropertiesController implements TransactionalController {
 
     @Autowired
+    @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
     public MVCModel execute(HttpServletRequest request) {
         List<Property> allProperties = new ArrayList<>();
@@ -35,8 +39,11 @@ public class ListAllPropertiesController implements MVCController {
                 try {
                     prop=propertyDao.findPropertyById(idToSee1);
 
+                    List<Utility>utilities = prop.getPropertyUtilities();
+
                     session.setAttribute("prop", prop);
-                    List<Photo> propertyPhotos = propertyDao.findAllPropertyPhotoss(idToSee1);
+                    session.setAttribute("utils", utilities);
+                   List<Photo> propertyPhotos = propertyDao.findAllPropertyPhotoss(idToSee1);
                     List<String> photoNames = new ArrayList<>();
                     for(Photo photo:propertyPhotos){
                         String photoName=photo.getPhotoName();
@@ -56,18 +63,13 @@ public class ListAllPropertiesController implements MVCController {
 
                 //return new MVCModel(prop, "/listPropertyByUser1.jsp");
             }
-
-
-
-
-
-
-        }catch (DBException e) {
+     }catch (DBException e) {
             System.out.println("Error!");
         }
 
 
         return new MVCModel(allProperties, "/listAllProperties.jsp");
     }
+
 
 }

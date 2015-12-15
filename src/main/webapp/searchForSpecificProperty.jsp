@@ -17,7 +17,7 @@
 
 <p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <label>Specify what kind of property are you looking for:</label>
-<form action="searchController" method="POST">
+<form action="<%=request.getContextPath()%>/search" method="POST">
 
   <p>Select which kind of category are you searching:</p>
   <select name="postType" required>
@@ -43,7 +43,18 @@
 
   <p>Specify a land area:</p>  From:  <input type="text" name="lowerLandArea" id="lowerLandArea" required>  To:  <input type="text" name="upperLandArea" id="upperLandArea" required><br>
 
+  <p>Check which utility applies:</p>
 
+  <input id="internet" name="internet" value="1" type="checkbox">
+  <label for="internet">Broadband internet cable</label><br>
+  <input id="city_gas" name="city_gas" value="1" type="checkbox">
+  <label for="city_gas">City gas pipe</label><br>
+  <input id="city_heat" name="city_heat" value="1" type="checkbox">
+  <label for="city_heat">City heat</label><br>
+  <input id="city_water" name="city_water" value="1" type="checkbox">
+  <label for="city_water">City water</label><br>
+  <input id="city_sewer" name="city_sewer" value="1" type="checkbox">
+  <label for="city_sewer">City sewer</label><br>
   <input type ="submit" name="searchProperty" value="Search">
 </form>
 

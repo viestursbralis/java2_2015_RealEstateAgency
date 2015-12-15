@@ -4,6 +4,7 @@ package lv.javaguru.java2.servlet.mvc;
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import java.util.List;
 
 
 @Controller
-public class NewPostRegisterController implements MVCController {
+public class NewPostRegisterController implements TransactionalController {
 
     @Autowired
     private CategoryDAO categoryDao;
@@ -23,6 +24,7 @@ public class NewPostRegisterController implements MVCController {
     private UtilityDAO propertyUtilityDao;
 
     @Autowired
+    @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
 
     @Autowired
@@ -141,7 +143,7 @@ public class NewPostRegisterController implements MVCController {
 
                 Long lastPropertyID=null;
                 try {
-                    lastPropertyID = propertyDao.create(property);//save property into database and get an ID of saved property;
+                    lastPropertyID = propertyDao.createProperty(property);//save property into database and get an ID of saved property;
                     session.removeAttribute("lastPropertyID");
                     session.setAttribute("lastPropertyID", lastPropertyID);
                 }catch (DBException e) {

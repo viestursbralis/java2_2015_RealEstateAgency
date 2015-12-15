@@ -3,22 +3,49 @@ package lv.javaguru.java2.domain;
 /**
  * Created by Viesturs on 10/17/2015.
  */
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
 import java.util.List;
 
-
+@Entity
+@Table(name="property")
 public class Property {
+    @Column(name="PROPERTY_ID", columnDefinition="int")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long propertyId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CATEGORY_ID", nullable = false)
     private Category category;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User client;
+    @Column (name="PROPERTY_DESCRIPTION")
     private String propertyDescription;
-    private List<PropertyOwner> propertyOwners;
-    private List<Utility> propertyUtilities;
+    @Column(name="PRICE")
     private double price;
+    @Column(name="ADRESS")
     private String adress;
+    @Column(name="AREA")
     private Long area;
+    @Column(name="COUNT_OF_BEDROOMS")
     private int countOfBedrooms;
+    @Column(name="LAND_AREA")
     private Long landArea;
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="property_owner_junction", joinColumns={@JoinColumn(name="PROPERTY_ID")},inverseJoinColumns={@JoinColumn(name="PROPERTY_OWNER_ID")})
+    private List<PropertyOwner> propertyOwners;
+    @ManyToMany(cascade=CascadeType.ALL)
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name="property_utility_junction", joinColumns={@JoinColumn(name="PROPERTY_ID")},inverseJoinColumns={@JoinColumn(name="UTILITY_ID")})
+    private List<Utility> propertyUtilities;
+    //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name="property_photos_junction", joinColumns={@JoinColumn(name="PROPERTY_ID")},inverseJoinColumns={@JoinColumn(name = "PHOTO_ID") })
     private List<Photo> propertyPhotos;
 
 

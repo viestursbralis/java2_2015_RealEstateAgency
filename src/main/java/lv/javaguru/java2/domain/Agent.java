@@ -1,19 +1,34 @@
 package lv.javaguru.java2.domain;
 
+
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Viesturs on 10/17/2015.
  */
+@Entity
+@Table(name="agent")
 public class Agent {
+    @Column(name="AGENT_ID", columnDefinition="int")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long agentId;
+    @Column (name="AGENT_FIRST_NAME")
     private String agentFirstName;
+    @Column(name="AGENT_LAST_NAME")
     private String agentLastName;
+    @Column (name="AGENT_BIOGRAPHY")
     private String agentBiography;
+    @Enumerated(EnumType.STRING)
+    @Column(name="AGENT_STATUSS")
     private Statuss agentStatuss;
+    @Column(name="AGENT_EMAIL")
     private String agentEmail;
-
+    @Column(name="AGENT_PASSWORD")
     private String agentPassword;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agent")
     private List<User> agentUsers;
 
 

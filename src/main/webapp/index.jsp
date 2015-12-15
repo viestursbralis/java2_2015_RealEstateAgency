@@ -53,7 +53,7 @@
 
 <script type="text/javascript">
   popupWindow =window.open('propertyDetailsPopUp.jsp',"_blank","directories=no, status=no, menubar=no, scrollbars=yes, resizable=no,width=600, height=280,top=200,left=200");
-
+<%session.removeAttribute("quickSearch");%>
 </script>
 <%} %>
 

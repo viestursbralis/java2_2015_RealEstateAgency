@@ -5,6 +5,7 @@ import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +13,8 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
-public class AgencyClientsChoiceController implements MVCController {
-    @Autowired
+public class AgencyClientsChoiceController implements TransactionalController {
+    @Autowired @Qualifier("ORM_PropertyDAO")
     PropertyDAO propertyDao;
 
 

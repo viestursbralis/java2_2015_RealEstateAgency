@@ -14,14 +14,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+@Repository("JDBC_UserDAO")
 public class UserDAOImpl extends DAOImpl implements UserDAO {
 @Autowired
     AgentDAO agentDAO;
 
 
     @Override
-    public void create(User user) throws DBException {
+    public void createNewUserInDatabase(User user) throws DBException {
         if (user == null) {
             return;
         }
@@ -106,7 +106,7 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
         return user;
     }
 
-    public List<User> getAll() throws DBException {
+    public List<User> getAllUsers() throws DBException {
         List<User> users = new ArrayList<>();
         Connection connection = null;
         try {
@@ -132,7 +132,37 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
     }
 
     @Override
-    public void delete(Long id) throws DBException {
+    public List<User> findAllUsersOfThisAgent(Agent agent) throws DBException {
+        List<User> users = new ArrayList<>();
+        Connection connection = null;
+        Long agentId=agent.getAgentId();
+        try {
+            connection = getConnection();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from USERS where AGENT_ID=?");
+            preparedStatement.setLong(1, agentId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUserId(resultSet.getLong("USER_ID"));
+                user.setFirstName(resultSet.getString("USER_FIRST_NAME"));
+                user.setLastName(resultSet.getString("USER_LAST_NAME"));
+                users.add(user);
+            }
+        } catch (Throwable e) {
+            System.out.println("Exception while getting customer list UserDAOImpl.findAllUsersOfThisAgent()");
+            e.printStackTrace();
+            throw new DBException(e);
+        } finally {
+            closeConnection(connection);
+        }
+        return users;
+    }
+
+
+
+    @Override
+    public void deleteUser(Long id) throws DBException {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -150,7 +180,7 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
     }
 
     @Override
-    public void update(User user) throws DBException {
+    public void updateUser(User user) throws DBException {
         if (user == null) {
             return;
         }
@@ -218,8 +248,12 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
   }
 
     /**********************************************************************************************/
+   public User findUserLike(String s) throws DBException {
+       User user = new User();
 
-
+       return user;
+   }
+/***************************************************************************************************/
 
 
 }

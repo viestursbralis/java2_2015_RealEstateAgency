@@ -9,6 +9,7 @@ import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.Statuss;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +19,15 @@ import java.util.List;
 import static lv.javaguru.java2.domain.Statuss.CLIENT;
 import static lv.javaguru.java2.domain.Statuss.JUNIOR;
 @Controller
-public class AgencyLoginController implements MVCController {
+public class AgencyLoginController implements TransactionalController {
 
-    @Autowired
+    @Autowired @Qualifier("ORM_UserDAO")
     private UserDAO userDao;
 
     @Autowired
     private AgentDAO agentDao;
 
-    @Autowired
+    @Autowired @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
 
     public MVCModel execute(HttpServletRequest request) {
@@ -38,6 +39,9 @@ public class AgencyLoginController implements MVCController {
 
         try {
             Statuss statuss = checkCredentials(userName, userPassword);
+            HttpSession session = request.getSession();
+            session.setAttribute("status", statuss);
+
 
            switch(statuss){
                 case CLIENT:
@@ -46,39 +50,51 @@ public class AgencyLoginController implements MVCController {
                    User  user = userDao.findUserByCredentials(userName, userPassword);
                     if(user!=null){
                         List<Property>clientProperties= propertyDao.findPropertyByClient(user);
+
                         user.setListOfProperties(clientProperties);
                         String userFirstName=user.getFirstName();
                         String userLastName=user.getLastName();
-                        HttpSession session = request.getSession();
+
                         session.setAttribute("user", user);
                         session.setAttribute("userFirstName", userFirstName);
                         session.setAttribute("userLastName", userLastName);
                         session.setAttribute("userName", userName);
                         session.setAttribute("userPassword", userPassword);
+
                         session.setAttribute("agentFirstName", user.getAgent().getAgentFirstName());
                         session.setAttribute("agentLastName", user.getAgent().getAgentLastName());
                     }
-                    break;
+
+                    return new MVCModel("Login data", "/clientLoggedInFirstPage1.jsp");
+
                 case JUNIOR:
 
                     Agent juniorAgent = agentDao.findAgentByCredentials(userName, userPassword);
-                   /* if(juniorAgent!=null){
-                        List<Property>clientProperties= propertyDao.findPropertyByClient(user);
-                        user.setListOfProperties(clientProperties);
-                        String userFirstName=user.getFirstName();
-                        String userLastName=user.getLastName();
-                        HttpSession session = request.getSession();
-                        session.setAttribute("user", user);
-                        session.setAttribute("userFirstName", userFirstName);
-                        session.setAttribute("userLastName", userLastName);
+                   if(juniorAgent!=null){
+                        List<User>users = userDao.findAllUsersOfThisAgent(juniorAgent);
+
+                       session.setAttribute("juniorAgent",juniorAgent);
+                        session.setAttribute("agentFirstName", juniorAgent.getAgentFirstName());
+                       session.setAttribute("agentLastName", juniorAgent.getAgentLastName());
                         session.setAttribute("userName", userName);
-                        session.setAttribute("userPassword", userPassword);
-                        session.setAttribute("agentFirstName", user.getAgent().getAgentFirstName());
-                        session.setAttribute("agentLastName", user.getAgent().getAgentLastName());
-                    }*/
+                       session.setAttribute("password", userPassword);
+
+                    }
+                    return new MVCModel("Login data", "/juniorAgentLoggedInFirstPage1.jsp");
+
+               case SENIOR:
+                   Agent seniorAgent = agentDao.findAgentByCredentials(userName, userPassword);
+
+                   if(seniorAgent!=null){
+
+                       session.setAttribute("seniorAgent", seniorAgent);
 
 
-            }
+                   }
+                   return new MVCModel("Login data", "/seniorAgentLoggedInFirstPage1.jsp");
+
+
+           }
         }        catch (DBException e) {
             System.out.println("Error!");
         }

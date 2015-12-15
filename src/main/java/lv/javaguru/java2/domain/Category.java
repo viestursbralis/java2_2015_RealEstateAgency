@@ -1,11 +1,21 @@
 package lv.javaguru.java2.domain;
 
+import javax.persistence.*;
+
 /**
  * Created by Viesturs on 10/19/2015.
  */
+@Entity
+@Table(name="category")
 public class Category {
+    @Column(name="CATEGORY_ID", columnDefinition="int")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long categoryId;
+    @Enumerated(EnumType.STRING)
+    @Column(name="CATEGORY_SHORT_NAME")
     private CategoryName categoryName;
+    @Column(name="CATEGORY_DESCRIPTION")
     private String categoryDescription;
 
     public Long getCategoryId() { return categoryId; }

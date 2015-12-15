@@ -16,11 +16,12 @@ import java.util.logging.Logger;
 
 public class MVCFilter implements Filter {
 
-    private Map<String, MVCController> controllers;
+    //private Map<String, MVCController> controllers;
+    private Map<String, TransactionalController> controllers;
     private ApplicationContext springContext;
     private static final Logger logger = Logger.getLogger(MVCFilter.class.getName());
-    private MVCController getBean(Class clazz){
-        return (MVCController) springContext.getBean(clazz);
+    private TransactionalController getBean(Class clazz){
+        return (TransactionalController) springContext.getBean(clazz);
     }
     public void init(FilterConfig filterConfig) throws ServletException {
         try {
@@ -29,7 +30,7 @@ public class MVCFilter implements Filter {
         } catch (BeansException e) {
             logger.log(Level.INFO, "Spring context failed to start", e);
         }
-        controllers = new HashMap<String, MVCController>();
+        controllers = new HashMap<String, TransactionalController>();
         controllers.put("/hello", getBean(HelloWorldController.class));
         controllers.put("/index", getBean(IndexPageController.class));
         controllers.put("/login", getBean(AgencyLoginController.class));
@@ -44,7 +45,9 @@ public class MVCFilter implements Filter {
         controllers.put("/listByUser", getBean(ListByUserController.class));
         controllers.put("/imageUpload", getBean(ImageUploadController3.class));
         controllers.put("/quickSearch", getBean(QuickSearchController.class));
-
+        controllers.put("/listAllUsersByAgents", getBean(ListAllUsersOfThisAgentController.class));
+        controllers.put("/searchForSpecificUser", getBean(SearchForSpecificUserController.class));
+        controllers.put("/listAllPropertiesOfThisUserFromAgent", getBean(ListByUserFromAgentController.class));//Ajax controller
     }
    /* public void init(FilterConfig filterConfig) throws ServletException {
 

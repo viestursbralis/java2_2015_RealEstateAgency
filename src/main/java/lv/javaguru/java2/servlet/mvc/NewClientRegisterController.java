@@ -8,17 +8,18 @@ import lv.javaguru.java2.domain.Agent;
 import lv.javaguru.java2.domain.Statuss;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class NewClientRegisterController implements MVCController {
+public class NewClientRegisterController implements TransactionalController {
 
     @Autowired
     AgentDAO agentDao;
-    @Autowired
+    @Autowired @Qualifier("ORM_UserDAO")
     UserDAO userDao;
 
 
@@ -56,7 +57,7 @@ public class NewClientRegisterController implements MVCController {
             String agentFirstName=newUser.getAgent().getAgentFirstName();
             String agentLastName=newUser.getAgent().getAgentLastName();
             try {
-                userDao.create(newUser);
+                userDao.createNewUserInDatabase(newUser);
 
                 HttpSession session = request.getSession();
                 session.setAttribute("userFirstName", userFirstName);

@@ -1,12 +1,23 @@
 package lv.javaguru.java2.domain;
 
+import javax.persistence.*;
+
 /**
  * Created by Viesturs on 19-Nov-15.
  */
+@Entity
+@Table(name="photos")
 public class Photo {
-
+    @Column(name="PHOTO_ID", columnDefinition="int")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long photoId;
+    @Column(name="PHOTO_NAME")
     private String photoName;
+
+
+
+
 
     public long getPhotoId() {
         return photoId;
@@ -23,6 +34,9 @@ public class Photo {
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
     }
+
+
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

@@ -11,21 +11,21 @@ import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 @Repository
 
 public class PropertyDAOImpl extends DAOImpl implements PropertyDAO {
     @Autowired
     AgentDAO agentDao;
-    @Autowired
+    @Autowired@Qualifier("ORM_UserDAO")
     UserDAO userDao;
 /*************************************************************************************************************/
-public Long create(Property property) throws DBException {
+public Long createProperty(Property property) throws DBException {
     if (property == null) {
         throw new NullPointerException();
     }
@@ -235,119 +235,182 @@ return lastInsertedPropertyID;
 
   }
 
+    /****************************************************************************************************/
 
-/********************************************************************************************/
-public List<Property> findPropertyById(List<Property> properties, Long propertyId) throws DBException {
-    List<Property> propertyById= new ArrayList<>();
+    public List<Property>findPropertyByPriceRange(Double minPrice, Double maxPrice) throws DBException{
+        List<Property> propertiesByPriceRange = new ArrayList<>();
 
-    propertyById=properties.stream()
-            .filter((Property p) -> p.getPropertyId() == propertyId)
-            .collect(Collectors.toList());
+        String sql1="select * from property where PRICE BETWEEN '"+minPrice+"  ' AND ' "+maxPrice+" '";
 
-    return propertyById;
-}
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            Statement st0 = connection.createStatement();
+            Statement st1 = connection.createStatement();
+            Statement st2 = connection.createStatement();
+            Statement st3 = connection.createStatement();
+            Statement st4 = connection.createStatement();
+            Statement stAgent = connection.createStatement();
+
+            ResultSet resultSet1=st1.executeQuery(sql1);
+
+            while (resultSet1.next()) {
+                Property property = new Property();
+                Agent agent =new Agent();
+                User user = new User();
+                List<PropertyOwner> propertyOwners=new ArrayList<>();
+                List<Utility>propertyUtilities=new ArrayList<>();
+                Utility utility = new Utility ();
+                property.setPropertyId(resultSet1.getLong("PROPERTY_ID"));
+                Long propertyId = resultSet1.getLong("PROPERTY_ID");
 
 
-    /***********************************************************************************************/
-    public Property findPropertyByOneId(List<Property> properties, Long propertyId) throws DBException {
-        Property propertyById= new Property();
+                property.setPropertyDescription(resultSet1.getString("PROPERTY_DESCRIPTION"));
+                Long categoryId=resultSet1.getLong("CATEGORY_ID");
+                String sqlCat="select c.* from category AS c where CATEGORY_ID="+categoryId;
+                ResultSet resultSetCat=st0.executeQuery(sqlCat);
+                while(resultSetCat.next()){Category category = new Category();
+                    category.setCategoryId(resultSetCat.getLong("CATEGORY_ID"));
+                    category.setCategoryName(CategoryName.valueOf(resultSetCat.getString("CATEGORY_SHORT_NAME")));
+                    category.setCategoryDescription(resultSetCat.getString("CATEGORY_DESCRIPTION"));
+                    property.setCategory(category);
+                }
 
-        propertyById=(Property)properties.stream()
-                .filter((Property p) -> p.getPropertyId() == propertyId);
+                Long userId=resultSet1.getLong("USER_ID");
+                user= userDao.getUserById(userId);
+                property.setClient(user);
+                property.setPrice(resultSet1.getDouble("PRICE"));
+                property.setAdress(resultSet1.getString("ADRESS"));
+                property.setArea(resultSet1.getLong("AREA"));
+                property.setCountOfBedrooms(resultSet1.getInt("COUNT_OF_BEDROOMS"));
+                property.setLandArea(resultSet1.getLong("LAND_AREA"));
 
-        return propertyById;
+                String sql2="select po.* from property_owner_junction AS poj " +
+                        "inner join property_owner AS po on poj.PROPERTY_OWNER_ID = " +
+                        " po.PROPERTY_OWNER_ID where poj.PROPERTY_ID = " + propertyId;
+                ResultSet resultSet2=st2.executeQuery(sql2);
+
+                while(resultSet2.next()){
+                    PropertyOwner owner = new PropertyOwner();
+                    owner.setFirstName(resultSet2.getString("FIRST_NAME"));
+                    propertyOwners.add(owner);
+                }
+                property.setPropertyOwners(propertyOwners);
+
+                String sql3="select u.* from property_utility_junction AS puj " +
+                        "inner join utility AS u on puj.UTILITY_ID = " +
+                        " u.UTILITY_ID where puj.PROPERTY_ID = " + propertyId;
+                ResultSet resultSet3=st3.executeQuery(sql3);
+                while(resultSet3.next()){
+                    Utility propertyUtility = new Utility();
+                    propertyUtility.setUtilityId(resultSet3.getLong("UTILITY_ID"));
+                    propertyUtility.setUtilityDescription(resultSet3.getString("UTILITY_DESCRIPTION"));
+                    propertyUtilities.add(propertyUtility);
+                }
+                property.setPropertyUtilities(propertyUtilities);
+
+                propertiesByPriceRange.add(property);
+
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+
+        return propertiesByPriceRange;
     }
 
+    /***********************************************************************************************/
 
-    /***************************************************************************************************/
+    public List<Property> findPropertyByCategoryId(Long categoryId ) throws DBException{
+        List<Property> propertyByCategory = new ArrayList<>();
 
-/*public List<Property> findPropertyByCategoryId(List<Property> properties, Long categoryId ) throws DBException {
-    List<Property> propertiesByCategoryId =new ArrayList<>();
+        String sql1="select * from property where CATEGORY_ID = '"+categoryId +" '";
 
-    Optional<Property> price=properties.stream().min(Comparator.comparingDouble(Property::getPrice));
+        Connection connection = null;
 
+        try {
+            connection = getConnection();
+            Statement st0 = connection.createStatement();
+            Statement st1 = connection.createStatement();
+            Statement st2 = connection.createStatement();
+            Statement st3 = connection.createStatement();
+            Statement st4 = connection.createStatement();
+            Statement stAgent = connection.createStatement();
 
-    return propertiesByCategoryId;
+            ResultSet resultSet1=st1.executeQuery(sql1);
 
-}*/
-/************************************************************************************************/
-public List<Property> findPropertyByCategoryId(List<Property> properties, Long categoryId ) throws DBException {
-    List<Property> propertiesByCategoryId =new ArrayList<>();
-
-    propertiesByCategoryId=properties
-            .stream()
-            .filter((Property p) -> p.getCategory().getCategoryId()==categoryId)
-            .collect(Collectors.toList());
-
-
-    return propertiesByCategoryId;
-
-}
-
-/**********************************************************************************************/
-public List<Property>findPropertyByCategoryName (List<Property> properties, CategoryName categoryName) throws DBException {
-    List<Property> propertiesByCategoryName =new ArrayList<>();
-
-
-    return propertiesByCategoryName;
-}
+            while (resultSet1.next()) {
+                Property property = new Property();
+                Agent agent =new Agent();
+                User user = new User();
+                List<PropertyOwner> propertyOwners=new ArrayList<>();
+                List<Utility>propertyUtilities=new ArrayList<>();
+                Utility utility = new Utility ();
+                property.setPropertyId(resultSet1.getLong("PROPERTY_ID"));
+                Long propertyId= resultSet1.getLong("PROPERTY_ID");
 
 
-/***************************************************************************************************/
-public List<Property>findPropertyByPriceRange(List<Property> properties, Double minPrice, Double maxPrice) throws DBException{
-    List<Property> propertiesByPriceRange=new ArrayList<>();
+                property.setPropertyDescription(resultSet1.getString("PROPERTY_DESCRIPTION"));
+                //Long categoryId=resultSet1.getLong("CATEGORY_ID");
+                String sqlCat="select c.* from category AS c where CATEGORY_ID="+categoryId;
+                ResultSet resultSetCat=st0.executeQuery(sqlCat);
+                while(resultSetCat.next()){Category category = new Category();
+                    category.setCategoryId(resultSetCat.getLong("CATEGORY_ID"));
+                    category.setCategoryName(CategoryName.valueOf(resultSetCat.getString("CATEGORY_SHORT_NAME")));
+                    category.setCategoryDescription(resultSetCat.getString("CATEGORY_DESCRIPTION"));
+                    property.setCategory(category);
+                }
 
+                Long userId=resultSet1.getLong("USER_ID");
+                user= userDao.getUserById(userId);
+                property.setClient(user);
+                property.setPrice(resultSet1.getDouble("PRICE"));
+                property.setAdress(resultSet1.getString("ADRESS"));
+                property.setArea(resultSet1.getLong("AREA"));
+                property.setCountOfBedrooms(resultSet1.getInt("COUNT_OF_BEDROOMS"));
+                property.setLandArea(resultSet1.getLong("LAND_AREA"));
 
-    propertiesByPriceRange=properties
-            .stream()
-            .filter((Property p) -> p.getPrice() > minPrice && p.getPrice() < maxPrice)
-            .collect(Collectors.toList());
+                String sql2="select po.* from property_owner_junction AS poj " +
+                        "inner join property_owner AS po on poj.PROPERTY_OWNER_ID = " +
+                        " po.PROPERTY_OWNER_ID where poj.PROPERTY_ID = " + propertyId;
+                ResultSet resultSet2=st2.executeQuery(sql2);
 
+                while(resultSet2.next()){
+                    PropertyOwner owner = new PropertyOwner();
+                    owner.setFirstName(resultSet2.getString("FIRST_NAME"));
+                    propertyOwners.add(owner);
+                }
+                property.setPropertyOwners(propertyOwners);
 
-    return propertiesByPriceRange;
-}
+                String sql3="select u.* from property_utility_junction AS puj " +
+                        "inner join utility AS u on puj.UTILITY_ID = " +
+                        " u.UTILITY_ID where puj.PROPERTY_ID = " + propertyId;
+                ResultSet resultSet3=st3.executeQuery(sql3);
+                while(resultSet3.next()){
+                    Utility propertyUtility = new Utility();
+                    propertyUtility.setUtilityId(resultSet3.getLong("UTILITY_ID"));
+                    propertyUtility.setUtilityDescription(resultSet3.getString("UTILITY_DESCRIPTION"));
+                    propertyUtilities.add(propertyUtility);
+                }
+                property.setPropertyUtilities(propertyUtilities);
 
-  /***************************************************************************************************/
-  public List<Property> findPropertiesWithCertainUtilities (List<Property> properties, Long [] utilities)throws DBException {
-      List<Property> propertyList = new ArrayList<>();
-      StringBuilder sql=new StringBuilder();
-      sql.append("select p.* from utility AS u INNER JOIN property_utility_junction AS puj ON puj.UTILITY_ID" +
-              "=puj.UTILITY_ID INNER JOIN property AS p ON puj.PROPERTY_ID=p.PROPERTY_ID");
-      if(utilities[0]==1){sql.append(" where u.UTILITY_ID=1 ");}
-      if(utilities[1]==1){sql.append(" AND u.UTILITY_ID=2 ");}
-      if(utilities[2]==1){sql.append(" AND u.UTILITY_ID=3 ");}
-      if(utilities[3]==1){sql.append(" AND u.UTILITY_ID=4 ");}
-      if(utilities[4]==1){sql.append(" AND u.UTILITY_ID=5 ");}
+propertyByCategory.add(property);
 
-         Connection connection = null;
-      try {
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
 
-          connection = getConnection();
-          PreparedStatement statement = connection.prepareStatement(sql.toString());
-          ResultSet resultSet = statement.executeQuery();
-          while (resultSet.next()) {
+     return propertyByCategory;
+    }
 
-              Property property = new Property();
-
-              property.setPropertyId(resultSet.getLong("PROPERTY_ID"));
-
-              propertyList.add(property);
-
-
-          }
-      } catch (SQLException ex) {
-          ex.printStackTrace();
-      } finally {
-          closeConnection(connection);
-      }
-
-
-
-      return propertyList;
-  }
-
-/**************************************************************************************************/
-public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)throws DBException {
+/*************************************************************************************************/
+public List<Property> findPropertiesWithCertainUtilities (Long[] utilities)throws DBException {
     List<Property> propertyList = new ArrayList<>();
     StringBuilder sql=new StringBuilder();
     sql.append("select p.* from utility AS u INNER JOIN property_utility_junction AS puj ON puj.UTILITY_ID" +
@@ -356,7 +419,7 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
     if(utilities[1]==1){sql.append(" AND u.UTILITY_ID=2 ");}
     if(utilities[2]==1){sql.append(" AND u.UTILITY_ID=3 ");}
     if(utilities[3]==1){sql.append(" AND u.UTILITY_ID=4 ");}
-    if(utilities[4]==1){sql.append(" AND u.UTILITY_ID=5 ");}
+     if(utilities[4]==1){sql.append(" AND u.UTILITY_ID=5 ");}
 
     Connection connection = null;
     try {
@@ -385,19 +448,45 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
     return propertyList;
 }
 
-  /*************************************************************************************************/
-  public List<Property>findPropertiesWithCertainUtilities (List<Property> properties, List<Utility> utilities)throws DBException {
-      List<Property> propertiesByUtilities = new ArrayList<>();
 
-      propertiesByUtilities=properties
-              .stream()
-              .filter((Property p) -> p.getPropertyUtilities().equals(utilities))
-              .collect(Collectors.toList());
+/**************************************************************************************************/
+public List<Property> findPropertiesWithCertainUtilities (List<Utility> utilities)throws DBException {
+    List<Property> propertyList = new ArrayList<>();
+    StringBuilder sql=new StringBuilder();
+    sql.append("select p.* from utility AS u INNER JOIN property_utility_junction AS puj ON puj.UTILITY_ID" +
+            "=puj.UTILITY_ID INNER JOIN property AS p ON puj.PROPERTY_ID=p.PROPERTY_ID");
+    //if(utilities[0]==1){sql.append(" where u.UTILITY_ID=1 ");}
+    //if(utilities[1]==1){sql.append(" AND u.UTILITY_ID=2 ");}
+    //if(utilities[2]==1){sql.append(" AND u.UTILITY_ID=3 ");}
+    //if(utilities[3]==1){sql.append(" AND u.UTILITY_ID=4 ");}
+   // if(utilities[4]==1){sql.append(" AND u.UTILITY_ID=5 ");}
+
+    Connection connection = null;
+    try {
+
+        connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+
+            Property property = new Property();
+
+            property.setPropertyId(resultSet.getLong("PROPERTY_ID"));
+
+            propertyList.add(property);
 
 
-   return propertiesByUtilities;
-  }
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    } finally {
+        closeConnection(connection);
+    }
 
+
+
+    return propertyList;
+}
 
 /*****************************************************************************************************/
    public List<Property> findPropertyByAnyKeyword(String keyWord) throws DBException {
@@ -412,53 +501,6 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
 
     /************************************************************************************************/
 
-
-
-    public List<Property> findPropertyByAgentKeyWord(List<Property> properties, String agentName)throws DBException {
-
-        List<Property> propertyList = new ArrayList<>();
-        List<PropertyOwner> ownerList = new ArrayList<>();
-
-       String sql ="select p.* from property_owner AS po INNER JOIN property_owner_junction AS poj ON poj.PROPERTY_OWNER_ID=" +
-               "poj.PROPERTY_OWNER_ID INNER JOIN property AS p ON pos.PROPERTY_ID=p.PROPERTY_ID" +
-               " where (po.PROPERTY_OWNER_ID=";
-
-        Connection connection = null;
-        try {
-
-            connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Property property = new Property();
-                PropertyOwner propertyOwner = new PropertyOwner();
-                property.setPropertyId(resultSet.getLong("PROPERTY_ID"));
-
-                propertyOwner.setFirstName(resultSet.getString("FIRST_NAME"));
-                propertyOwner.setLastName(resultSet.getString("LAST_NAME"));
-
-                ownerList.add(propertyOwner);
-                property.setPropertyOwners(ownerList);
-                propertyList.add(property);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            closeConnection(connection);
-        }
-        return propertyList;
-
-    }
-    /********************************************************************************************/
-    public List<Property>findPropertyByAgent(List<Property> properties, Agent agent) throws DBException{
-        List<Property> propertyListByAgents=new ArrayList<>();
-
-
-
-        return propertyListByAgents;
-    }
-
-    /*********************************************************************************************/
 
     public List<Property> findPropertyByOwnerKeyWord(String ownerName)throws DBException {
         List<Property> propertyList = new ArrayList<>();
@@ -502,45 +544,10 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
 
     /*******************************************************************************************/
 
-    public List<Property> findPropertyByOwner(List<Property>properties, PropertyOwner propertyOwner) throws DBException{
+    public List<Property> findPropertyByOwner( PropertyOwner propertyOwner) throws DBException{
         List<Property> propertiesByOwner = new ArrayList<>();
 
         return propertiesByOwner;
-    }
-
-
-    /*******************************************************************************************/
-   public  List<Property> findPropertyByClient(List<Property>properties, User client) throws DBException {
-       List<Property> propertiesByClient=new ArrayList<>();
-
-       propertiesByClient=properties
-               .stream()
-
-               .filter((Property p) -> p.getPropertyId()==1)
-               .collect(Collectors.toList());
-
-       for(Property prop:propertiesByClient){
-           System.out.println(prop);
-           System.out.println("This sucks inside a props!!!");
-       }
-       System.out.println(propertiesByClient);
-       System.out.println("This sucks outside a props!!!");
-       return propertiesByClient;
-   }
-
-    /***********************************************************************************************/
-
-    public  List<Property> findPropertyByClient(List<Property>properties, Long clientId) throws DBException {
-        List<Property> propertiesByClient=new ArrayList<>();
-
-        propertiesByClient=properties
-                .stream()
-
-                .filter((Property p) -> p.getPropertyId()==clientId)
-                .collect(Collectors.toList());
-
-
-        return propertiesByClient;
     }
 
     /***********************************************************************************************/
@@ -634,7 +641,7 @@ public List<Property> findPropertiesWithCertainUtilities (Long [] utilities)thro
 
 
     /*************************************************************************************************/
-    public List<Property> findPropertyByClientId( Long clientId) throws DBException {
+    public List<Property> findPropertyByClientId(Long clientId) throws DBException {
 
 
         List<Property> propertiesByClient = new ArrayList<>();
@@ -794,7 +801,7 @@ String sql="insert into property (CATEGORY_ID, PROPERTY_DESCRIPTION, PRICE, " +
 public Long insertPhoto(String photoName) throws DBException{
 
         Long lastInsertedPhotoID = null;
-        String sql="insert into photos (PHOTO_NAME)"+"values(?)";
+
         Connection connection = null;
 
     try {

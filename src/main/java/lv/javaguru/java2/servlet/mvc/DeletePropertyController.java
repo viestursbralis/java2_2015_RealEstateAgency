@@ -7,6 +7,7 @@ import lv.javaguru.java2.domain.Photo;
 import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +15,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
-public class DeletePropertyController implements MVCController {
+public class DeletePropertyController implements TransactionalController {
 
     @Autowired
+    @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
     @Autowired
+    @Qualifier("ORM_UserDAO")
     private UserDAO userDao;
 
     public MVCModel execute(HttpServletRequest request) {
@@ -102,6 +105,7 @@ if(request.getParameter("deleteFromPopup")!=null&&request.getParameter("deleteFr
 
         session.setAttribute("deleted", info);
         session.removeAttribute("propertyDetails");
+        session.removeAttribute("seeDetails");
         //session.setAttribute("propertyDetails", null);
 
     } catch (DBException e) {

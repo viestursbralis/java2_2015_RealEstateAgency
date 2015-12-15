@@ -1,5 +1,6 @@
 package lv.javaguru.java2.database;
 
+import lv.javaguru.java2.domain.Agent;
 import lv.javaguru.java2.domain.User;
 
 import java.util.List;
@@ -9,17 +10,19 @@ import java.util.List;
  */
 public interface UserDAO {
 
-    void create(User user) throws DBException;
+    void createNewUserInDatabase(User user) throws DBException;
 
     User getUserById(Long id) throws DBException;
 
-    void delete(Long id) throws DBException;
+    void deleteUser(Long id) throws DBException;
 
-    void update(User user) throws DBException;
+    void updateUser(User user) throws DBException;
 
-    List<User> getAll() throws DBException;
+    List<User> getAllUsers() throws DBException;
 
     User findUserByCredentials(String username, String password)throws DBException;
 
+    List<User> findAllUsersOfThisAgent(Agent agent) throws DBException;
 
+    User findUserLike(String s) throws DBException;
 }
