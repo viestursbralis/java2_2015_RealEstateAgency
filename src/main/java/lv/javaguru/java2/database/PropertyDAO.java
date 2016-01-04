@@ -3,6 +3,7 @@ package lv.javaguru.java2.database;
 /**
  * Created by Viesturs on 10/17/2015.
  */
+
 import lv.javaguru.java2.domain.*;
 
 import java.util.List;
@@ -34,6 +35,11 @@ public interface PropertyDAO {
     //List<Agent>findAllAgents() throws DBException;//todo implement;
     //List<Agent>findAllActiveAgents(List<Property>properties) throws DBException;//todo implement;
     List<Photo>findAllPropertyPhotoss(Long propertyId) throws DBException;
+
+    List<Property> filterByCriteria(double minPrice, double maxPrice, int minBedrooms, int maxBedrooms,
+                                        Long minLandArea, Long maxLandArea, Long minArea, Long maxArea,
+                                        List<Utility> utilities, String address,
+                                        Category category);
 
 
     //void insert(Property property) throws DBException;

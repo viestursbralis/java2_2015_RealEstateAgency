@@ -6,10 +6,7 @@ package lv.javaguru.java2.database.Hibernate;
 
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.PropertyDAO;
-import lv.javaguru.java2.domain.Photo;
-import lv.javaguru.java2.domain.Property;
-import lv.javaguru.java2.domain.User;
-import lv.javaguru.java2.domain.Utility;
+import lv.javaguru.java2.domain.*;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -153,8 +150,22 @@ public List<Property> findPropertyByClientId(Long clientId) throws DBException{
 
     }
 
+    @Override
+    public List<Property> filterByCriteria(double minPrice, double maxPrice, int minBedrooms, int maxBedrooms, Long minLandArea,
+                                           Long maxLandArea, Long minArea, Long maxArea, List<Utility> utilities,
+                                           String address, Category category) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Property.class, "property");
 
+        criteria.createAlias("property.propertyUtilities", "propertyUtilities");
+        criteria.createAlias("propertyUtilities.utilityId", "utilityId");
+        List<Property> filteredPropertyList = (List<Property>) criteria.add(Restrictions.between("price", minPrice, maxPrice)).add(Restrictions.between("countOfBedrooms", minBedrooms, maxBedrooms))
+                .add(Restrictions.between("landArea", minLandArea, maxLandArea)).add(Restrictions.between("area", minArea, maxArea))
+                .add(Restrictions.eq("propertyUtilities", utilities)).add(Restrictions.like("adress", address));
 
+        return filteredPropertyList;
+
+    }
 
     @Override
     public void delete(Long id) throws DBException {
