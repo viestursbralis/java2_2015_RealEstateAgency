@@ -7,5 +7,11 @@ import lv.javaguru.java2.domain.PropertyOwner;
  */
 public interface PropertyOwnerDAO {
 
-    Long create(PropertyOwner propertyOwner) throws DBException;
+    Long createPropertyOwner(PropertyOwner propertyOwner) throws DBException;
+    PropertyOwner findPropertyOwnerById(Long ownerId) throws DBException;
+    void updatePropertyOwner(PropertyOwner owner) throws DBException;
+
+
+
+
 }

@@ -154,7 +154,7 @@ List<Long>utilities=new ArrayList<>();
         for (PropertyOwner propertyOwner : propertyOwnersMain) {
 
             try{
-            lastPropertyOwnerID = propertyOwnerDao.create(propertyOwner);
+            lastPropertyOwnerID = propertyOwnerDao.createPropertyOwner(propertyOwner);
             propertyOwnersID.add(lastPropertyOwnerID);}
             catch (DBException e) {
                 System.out.println("Error!");

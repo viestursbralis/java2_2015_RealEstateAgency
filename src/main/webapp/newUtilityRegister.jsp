@@ -17,7 +17,7 @@
 <p>You agent is <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <fieldset>
   <p>New property utilities register:</p>
-  <form action="<%=request.getContextPath()%>/newPost" method="POST">
+  <form action="<%=request.getContextPath()%>/newPost" method="GET">
     <p>Check which utility applies:</p>
 
     <input id="internet" name="internet" value="1" type="checkbox">

@@ -47,7 +47,7 @@ public class MVCFilter implements Filter {
         controllers.put("/quickSearch", getBean(QuickSearchController.class));
         controllers.put("/listAllUsersByAgents", getBean(ListAllUsersOfThisAgentController.class));
         controllers.put("/searchForSpecificUser", getBean(SearchForSpecificUserController.class));
-        controllers.put("/listAllPropertiesOfThisUserFromAgent", getBean(ListByUserFromAgentController.class));//Ajax controller
+        //controllers.put("/listAllPropertiesOfThisUserFromAgent", getBean(ListByUserFromAgentController.class));//Ajax controller
     }
    /* public void init(FilterConfig filterConfig) throws ServletException {
 

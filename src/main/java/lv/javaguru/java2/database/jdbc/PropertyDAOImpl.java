@@ -10,19 +10,28 @@ import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.PropertyDAO;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.*;
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-@Repository
+import java.util.Map;
+
+@Repository ("JDBC_PropertyDAO")
 
 public class PropertyDAOImpl extends DAOImpl implements PropertyDAO {
     @Autowired
+    @Qualifier("JDBC_AgentDAO")
     AgentDAO agentDao;
-    @Autowired@Qualifier("ORM_UserDAO")
+    @Autowired@Qualifier("JDBC_UserDAO")
     UserDAO userDao;
 /*************************************************************************************************************/
 public Long createProperty(Property property) throws DBException {
@@ -859,11 +868,21 @@ public List<Photo>findAllPropertyPhotoss(Long propertyId) throws DBException {
 
    return propertyPhotos;
 }
+/**************************************************************/
+public void insertPhoto(Photo photo) throws DBException{}
 
 /****************************************************************************************************/
+public Property findPropertyByIdWithAllLazyLists(Long propertyId) throws DBException {
+
+    Property prop = new Property();
+    return prop;
+}
+/******************************************************************************************************/
 
      public void update(Property property) {
          }
+
+    public void mergeProperty(Property property) throws DBException{}
      public void delete(Long propertyId) throws DBException {
 
          String sql = " delete from property where PROPERTY_ID = ?";
@@ -886,4 +905,48 @@ public List<Photo>findAllPropertyPhotoss(Long propertyId) throws DBException {
          }
 
      }
+    @Override
+    public List<Property> filterByCriteria(double minPrice, double maxPrice, int minBedrooms, int maxBedrooms,
+                                    Long minLandArea, Long maxLandArea, Long minArea, Long maxArea,
+                                    List<Utility> utilities, String address, Category category) throws DBException{
+
+        List<Property>properties = new ArrayList<>();
+
+
+    return properties;
+    }
+
+    @Override
+    public List<Property>filterByCriteriaMap(Map<String, Object> searchCriteriaMap) throws DBException{
+        List<Property> properties = new ArrayList<>();
+
+
+        return properties;
+    }
+
+    @Override
+    public List<Property> propertiesByUtilities(Map<String, Object> searchCriteriaMap) throws DBException {
+        List<Property>propertyByUtilities = new ArrayList<>();
+
+
+
+
+
+        return propertyByUtilities;
+    }
+
+    @Override
+    public Property findApprovedPropertyById( Long propertyId) throws DBException{
+
+        Property property = new Property();
+
+
+
+
+
+        return property;
+
+    }
+
+
      }

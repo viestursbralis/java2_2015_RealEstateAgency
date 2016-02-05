@@ -15,7 +15,7 @@
 <p>You are logged in as:</p><%= session.getAttribute("userFirstName") %> <%= session.getAttribute("userLastName") %>
 <p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
 <label>To post a new advertisement please fill out a form:</label>
-<form action="<%=request.getContextPath()%>/newPost" method="POST">
+<form action="<%=request.getContextPath()%>/newPost" method="GET">
 
   Select in which category do you want to insert Your add:<br/>
   <select name="postType" required>

@@ -11,6 +11,9 @@
   <title></title>
 </head>
 <body>
+
+
+
 <% if (request.getAttribute("model")!= null) { %>
 <p>Model is:<%=request.getAttribute("model")%></p>
 <% } else {%>
@@ -47,6 +50,10 @@
 
 
 <p>You agent is: <%=session.getAttribute("agentFirstName")%>  <%=session.getAttribute("agentLastName")%></p><br>
+
+
+
+
 <label>Choose from available options:</label><br>
 
 
@@ -59,11 +66,28 @@
 
 <a href="<%=request.getContextPath()%>/search">Search for specific RealEstate in the database</a><br>
 
-<a href="<%=request.getContextPath()%>/deleteProperty?delete=delete">Delete a specific RealEstate from the database</a><br>
+<a href="<%=request.getContextPath()%>/deleteProperty">Delete a specific RealEstate from the database</a><br>
 
 
 <a href="<%=request.getContextPath()%>/logout">Log out</a><br>
 
 
+<fieldset id="field2">
+  <legent>There are deteils of particular property:</legent>
+  <table>
+    <div id="responsis">
+    </div>
+  </table>
+  <table>
+    <div id="dialog" >
+    </div>
+
+  </table>
+</fieldset>
+
+
 </body>
+
+
+
 </html>

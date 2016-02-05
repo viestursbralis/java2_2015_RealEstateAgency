@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -22,6 +24,7 @@ import java.util.Properties;
 /**
  * Created by Viesturs on 21-Nov-15.
  */
+
 @Configuration
 @ComponentScan(basePackages = {"lv.javaguru.java2"})
 @EnableTransactionManagement
@@ -92,6 +95,14 @@ public class SpringConfig {
         }
 
 
+
+    /*@Bean (name="jacksonMessageConverter")
+    public MappingJackson2HttpMessageConverter converter() {
+        //MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        //converter.setObjectMapper(mapper());
+        //return converter;
+        return new MappingJackson2HttpMessageConverter();
+    }*/
 
 
 

@@ -4,78 +4,117 @@ package lv.javaguru.java2.servlet.mvc;
  * Created by Viesturs on 14-Dec-15.
  */
 
+import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.PropertyDAO;
+import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Photo;
 import lv.javaguru.java2.domain.Property;
+import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-public class ListByUserFromAgentController implements TransactionalController {
+
+
+
+/*public class ListByUserFromAgentController  implements TransactionalController{//Ajax controller;
 
     @Autowired
     @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;
 
-    public MVCModel execute(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-
-        session.setAttribute("seeDetails", "false");
-        Property prop = new Property();
-/******************************************************************************/
+    @Autowired
+    @Qualifier("ORM_UserDAO")
+    private UserDAO userDao;
 
 
-        if (request.getParameter("seeDetails") != null && request.getParameter("seeDetails").equals("true")) {
-
-            session.setAttribute("seeDetails", "true");
-            session.setAttribute("propertyDetails", "true");
-            String idToSee = request.getParameter("ID");
+    @RequestMapping(value="listAllPropertiesOfThisUserFromAgent", method={RequestMethod.GET})
+    public  MVCModel execute(HttpServletRequest request) {
 
 
-            Long idToSee1 = Long.parseLong(String.valueOf(idToSee));
+        String idToSee0 = request.getParameter("ID");//ID of user which property list we want to see;
+         Long idToSee = Long.parseLong(String.valueOf(idToSee0));
 
 
-            try {
-                prop = propertyDao.findPropertyById(idToSee1);
+        User user = new User();
+        List<Property>propertiesOfThisUser=new ArrayList<>();
+        try {
+            user = userDao.getUserById(idToSee);
+            if (user != null) {
+                propertiesOfThisUser = propertyDao.findPropertyByClient(user);
+                user.setListOfProperties(propertiesOfThisUser);
 
-                session.setAttribute("prop", prop);
-                List<Photo> propertyPhotos = propertyDao.findAllPropertyPhotoss(idToSee1);
-                List<String> photoNames = new ArrayList<>();
-                for (Photo photo : propertyPhotos) {
-                    String photoName = photo.getPhotoName();
-
-                    photoNames.add(photoName);
-
-                }
-                session.setAttribute("photos", propertyPhotos);
-                session.setAttribute("photoNames", photoNames);
-                session.setAttribute("propertyDetails", "true");
-            } catch (Exception ex) {
-                System.out.println(ex);
             }
-            //Long id=Long.valueOf(ID).longValue();
-            session.setAttribute("idToSee", idToSee);//working;
-            session.setAttribute("idToSee1", idToSee1);//working;
-
-            //return new MVCModel(prop, "/listPropertyByUser1.jsp");
+        }  catch (DBException e) {
+            System.out.println("Error!");
         }
 
-        if (request.getParameter("seeDetails") != null && request.getParameter("seeDetails").equals("false")) {
-            session.setAttribute("seeDetails", "false");
-            //session.setAttribute("ID", null);
+        return new MVCModel (propertiesOfThisUser, "listUsersByAgents.jsp");
+
+    }
+
+}*/
+@Component
+@RestController
+@Transactional
+@EnableWebMvc
+public class ListByUserFromAgentController {//Ajax controller;
+
+    @Autowired
+    @Qualifier("ORM_PropertyDAO")
+    private PropertyDAO propertyDao;
+
+    @Autowired
+    @Qualifier("ORM_UserDAO")
+    private UserDAO userDao;
 
 
+    @RequestMapping(value="/lAPOTUFA/{ID}", method={RequestMethod.GET}, headers="Accept=*/*", produces = "application/json")
+
+public @ResponseBody List<Property> execute(@PathVariable(value="ID") Long ID ){
+
+
+        User user = new User();
+        List<Property>propertiesOfThisUser=new ArrayList<>();
+        List<Property>propertiesToShow = new ArrayList<>();
+        Property p = new Property();
+
+        try {
+            user = userDao.getUserById(ID);
+            if (user != null) {
+                propertiesOfThisUser = propertyDao.findPropertyByClient(user);
+                user.setListOfProperties(propertiesOfThisUser);
+for(Property prop:propertiesOfThisUser){
+    Property property = new Property();
+    property.setPropertyDescription(prop.getPropertyDescription());
+    property.setPrice(prop.getPrice());
+    property.setArea(prop.getArea());
+    property.setLandArea(prop.getLandArea());
+    propertiesToShow.add(property);
+}
+
+
+
+            }
+
+        }  catch (DBException e) {
+            System.out.println("Error!");
         }
-
-
-        return new MVCModel(prop, "/listPropertyByUser1.jsp");
-
+p.setPropertyId(Long.valueOf(1));
+        p.setPrice(200);
+        //return propertiesOfThisUser;
+        return propertiesToShow;
 
     }
 

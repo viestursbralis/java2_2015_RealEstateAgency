@@ -8,6 +8,7 @@ import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.Statuss;
 import lv.javaguru.java2.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @Repository("JDBC_UserDAO")
 public class UserDAOImpl extends DAOImpl implements UserDAO {
 @Autowired
+        @Qualifier("JDBC_AgentDAO")
     AgentDAO agentDAO;
 
 
@@ -255,5 +257,16 @@ public class UserDAOImpl extends DAOImpl implements UserDAO {
    }
 /***************************************************************************************************/
 
+public User findUserByPropertyID(Long ID) throws DBException{
+    User user = new User();
 
+
+
+    return user;
+}
+
+
+
+
+/****************************************************************************************************/
 }

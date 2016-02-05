@@ -1,5 +1,7 @@
 package lv.javaguru.java2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class User {
     @Column (name="USER_STATUSS")
     private Statuss statuss;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "AGENT_ID", nullable = false)
     private Agent agent;

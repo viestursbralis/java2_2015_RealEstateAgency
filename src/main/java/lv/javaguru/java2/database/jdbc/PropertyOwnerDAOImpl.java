@@ -13,9 +13,10 @@ import java.sql.ResultSet;
  * Created by Viesturs on 10/23/2015.
  */
 
-@Repository
+@Repository ("JDBC_PropertyOwnerDAO")
 public class PropertyOwnerDAOImpl extends DAOImpl implements PropertyOwnerDAO {
-    public Long create(PropertyOwner propertyOwner) throws DBException {
+
+    public Long createPropertyOwner(PropertyOwner propertyOwner) throws DBException {
         if (propertyOwner == null) {
             //return;
             throw new NullPointerException();
@@ -49,6 +50,16 @@ public class PropertyOwnerDAOImpl extends DAOImpl implements PropertyOwnerDAO {
         }
 return lastInsertedPropertyOwnerID;
     }
+
+    @Override
+    public PropertyOwner findPropertyOwnerById(Long ownerId) throws DBException{
+        PropertyOwner propertyOwner = new PropertyOwner();
+
+        return propertyOwner;
+    }
+
+    @Override
+    public void updatePropertyOwner(PropertyOwner owner) throws DBException{}
 
 
 }

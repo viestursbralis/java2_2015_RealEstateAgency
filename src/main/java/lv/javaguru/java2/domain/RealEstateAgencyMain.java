@@ -106,7 +106,7 @@ System.out.println("You have three options. You can browse our site without sign
                                     List<Long> propertyOwnersID = new ArrayList<>();
                                     Long lastPropertyOwnerID = null;
                                     for (PropertyOwner propertyOwner : propertyOwnersMain) {
-                                        lastPropertyOwnerID = propertyOwnerDao.create(propertyOwner);
+                                        lastPropertyOwnerID = propertyOwnerDao.createPropertyOwner(propertyOwner);
                                         propertyOwnersID.add(lastPropertyOwnerID);
                                     }
                                     junctionDao.propertyOwnerJunction(lastPropertyID, propertyOwnersID);

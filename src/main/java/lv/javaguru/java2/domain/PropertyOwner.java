@@ -1,5 +1,7 @@
 package lv.javaguru.java2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,8 +24,9 @@ public class PropertyOwner {
     private String ownerEmail;
     @Column(name="OWNER_CODE")
     private String ownerPhone;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "propertyOwners")
-    List<Property> property;
+    //@ManyToMany(fetch = FetchType.LAZY, mappedBy = "propertyOwners")
+    //@JsonIgnore
+    //List<Property> property;
 
 
 
@@ -50,9 +53,9 @@ public class PropertyOwner {
     public String getOwnerPhone() { return ownerPhone;}
     public void setOwnerPhone(String ownerPhone) { this.ownerPhone = ownerPhone; }
 
-    public List<Property> getProperty() { return property; }
+   // public List<Property> getProperty() { return property; }
 
-    public void setProperty(List<Property> property) { this.property = property; }
+    //public void setProperty(List<Property> property) { this.property = property; }
 
     public String toString() {
         return "Owner: " + id + ", Owner First Name: "

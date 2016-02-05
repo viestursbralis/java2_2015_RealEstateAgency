@@ -27,8 +27,8 @@ import java.util.List;
 public class ListAllUsersController implements TransactionalController {
 
     @Autowired
-    @Qualifier("JDBC_UserDAO")
-    UserDAO userDao = new UserDAOImpl();
+    @Qualifier("ORM_UserDAO")
+    UserDAO userDao;
     @Autowired
     @Qualifier("ORM_PropertyDAO")
     private PropertyDAO propertyDao;

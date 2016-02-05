@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Viesturs on 10/24/2015.
  */
 
-@Repository
+@Repository ("JDBC_UtilityDAO")
 public class UtilityDAOImpl extends DAOImpl implements UtilityDAO {
 
     public List<Utility> createUtility(List<Long> utilityId) throws DBException {
@@ -43,7 +43,7 @@ public class UtilityDAOImpl extends DAOImpl implements UtilityDAO {
 
                         utility.setUtilityId(resultSet.getLong("UTILITY_ID"));
                         utility.setUtilityDescription(resultSet.getString("UTILITY_DESCRIPTION"));
-
+                        utility.setChecked(true);
 
                     }
                     utilities.add(utility);
@@ -64,4 +64,12 @@ public class UtilityDAOImpl extends DAOImpl implements UtilityDAO {
         return utilities;
     }
 
+
+@Override
+    public List<Utility> getAllUtilities() throws DBException{
+        List<Utility> allUtils = new ArrayList<>();
+
+
+    return allUtils;
+    }
 }

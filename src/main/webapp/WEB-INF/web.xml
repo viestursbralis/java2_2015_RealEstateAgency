@@ -6,7 +6,7 @@
                       http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <filter>
+   <!-- <filter>
         <filter-name>MVCFilter</filter-name>
         <filter-class>lv.javaguru.java2.servlet.mvc.MVCFilter</filter-class>
     </filter>
@@ -14,8 +14,27 @@
     <filter-mapping>
         <filter-name>MVCFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
+    <!--<filter>
+        <filter-name>Ajax1</filter-name>
+        <filter-class>lv.javaguru.java2.servlet.mvc.ListByUserFromAgentController</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Ajax1</filter-name>
+        <url-pattern>/listAllPropertiesOfThisUserFromAgent</url-pattern>
+    </filter-mapping>-->
+
+   <!--<servlet>
+        <servlet-name>Ajax1</servlet-name>
+        <servlet-class>lv.javaguru.java2.servlet.mvc.ListByUserFromAgentController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Ajax1</servlet-name>
+        <url-pattern>/listAllPropertiesOfThisUserFromAgent</url-pattern>
+    </servlet-mapping>-->
 
     <!--
         <servlet>

@@ -25,4 +25,9 @@ public interface UserDAO {
     List<User> findAllUsersOfThisAgent(Agent agent) throws DBException;
 
     User findUserLike(String s) throws DBException;
+
+    User findUserByPropertyID(Long ID) throws DBException;
+
+
+
 }

@@ -3,11 +3,14 @@ package lv.javaguru.java2.database.Hibernate;
 import lv.javaguru.java2.database.DBException;
 import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Agent;
+import lv.javaguru.java2.domain.Property;
 import lv.javaguru.java2.domain.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +76,11 @@ private SessionFactory sessionFactory;
     @Override
     public List<User> findAllUsersOfThisAgent(Agent agent) throws DBException{
         List<User>users = new ArrayList<>();
-
+        Session session = sessionFactory.getCurrentSession();
+        users = session.createCriteria(User.class, "u")
+                .add(Restrictions.eq("u.agent", agent))
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
 
         return users;
     }
@@ -89,6 +96,22 @@ private SessionFactory sessionFactory;
 
         return user;
     }
+
+    @Override
+    public User findUserByPropertyID(Long ID) throws DBException{//ID - property id;
+        User user = new User();
+        Session session = sessionFactory.getCurrentSession();
+        Criteria c2 = session.createCriteria(Property.class, "property");
+        c2.add(Restrictions.eq("propertyId", ID));
+        c2.setProjection(Projections.property("client").as("client"));
+        c2.setResultTransformer(Transformers.aliasToBean(User.class));
+
+
+
+        return user;
+    }
+
+
 
 
 }

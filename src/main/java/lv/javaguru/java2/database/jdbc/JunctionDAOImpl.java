@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 
-@Repository
+@Repository ("JDBC_JunctionDAO")
 public class JunctionDAOImpl extends DAOImpl implements JunctionDAO {
 
     @Override

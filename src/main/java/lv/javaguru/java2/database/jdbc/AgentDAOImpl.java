@@ -6,6 +6,8 @@ import lv.javaguru.java2.database.UserDAO;
 import lv.javaguru.java2.domain.Agent;
 import lv.javaguru.java2.domain.Statuss;
 import lv.javaguru.java2.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -15,12 +17,14 @@ import java.util.List;
 /**
  * Created by Viesturs on 10/22/2015.
  */
-@Repository
+@Repository ("JDBC_AgentDAO")
 public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
-        UserDAO userDao = new UserDAOImpl();
+    @Autowired
+    @Qualifier("JDBC_UserDAO")
+        UserDAO userDao;
 
         @Override
-        public void create(Agent agent) throws DBException {
+        public void createNewAgentInDatabase(Agent agent) throws DBException {
             if (agent == null) {
                 return;
             }
@@ -96,7 +100,7 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
             }
         }
 
-        public List<Agent> getAll() throws DBException {
+        public List<Agent> getAllAgents() throws DBException {
             List<Agent> agents = new ArrayList<>();
             Connection connection = null;
             try {
@@ -126,7 +130,7 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
         }
 
         @Override
-        public void delete(Long id) throws DBException {
+        public void deleteAgent(Long id) throws DBException {
             Connection connection = null;
             try {
                 connection = getConnection();
@@ -144,7 +148,7 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
         }
 
         @Override
-        public void update(Agent agent) throws DBException {
+        public void updateAgent(Agent agent) throws DBException {
             if (agent == null) {
                 return;
             }

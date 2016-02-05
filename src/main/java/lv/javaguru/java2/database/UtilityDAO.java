@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface UtilityDAO {
 List<Utility> createUtility(List<Long> utilityId) throws DBException;
+    List<Utility> getAllUtilities() throws DBException;
 
 
 }

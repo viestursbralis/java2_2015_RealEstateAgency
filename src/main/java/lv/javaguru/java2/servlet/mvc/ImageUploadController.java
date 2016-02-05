@@ -18,7 +18,7 @@ public class ImageUploadController implements MVCController {
         HttpSession session = request.getSession();
         session.removeAttribute("fn");
         String fN=request.getParameter("fileName");
-        //String fuck = "fuck you";
+
         session.setAttribute("fn", fN);
         // gets absolute path of the web application
         String appPath = request.getServletContext().getRealPath("");

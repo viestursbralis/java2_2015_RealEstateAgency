@@ -4,6 +4,8 @@ package lv.javaguru.java2.domain;
  * Created by Viesturs on 10/17/2015.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -17,12 +19,22 @@ public class Property {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long propertyId;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CATEGORY_ID", nullable = false)
+
+    @ManyToOne
+    @JoinTable(name = "category_property_junction",
+            joinColumns={@JoinColumn(name="PROPERTY_ID")},
+    inverseJoinColumns={@JoinColumn(name="CATEGORY_ID")})
     private Category category;
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User client;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="POST_STATUSS")
+    private PostStatuss postStatuss;
+
     @Column (name="PROPERTY_DESCRIPTION")
     private String propertyDescription;
     @Column(name="PRICE")
@@ -35,17 +47,29 @@ public class Property {
     private int countOfBedrooms;
     @Column(name="LAND_AREA")
     private Long landArea;
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="property_owner_junction", joinColumns={@JoinColumn(name="PROPERTY_ID")},inverseJoinColumns={@JoinColumn(name="PROPERTY_OWNER_ID")})
+
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    //@LazyCollection(LazyCollectionOption.TRUE)
+    @JoinTable(name="property_owner_junction",
+            joinColumns={@JoinColumn(name="PROPERTY_ID")},
+            inverseJoinColumns={@JoinColumn(name="PROPERTY_OWNER_ID")})
     private List<PropertyOwner> propertyOwners;
-    @ManyToMany(cascade=CascadeType.ALL)
-    //@LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name="property_utility_junction", joinColumns={@JoinColumn(name="PROPERTY_ID")},inverseJoinColumns={@JoinColumn(name="UTILITY_ID")})
+
+
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name="property_utility_junction",
+            joinColumns={@JoinColumn(name="PROPERTY_ID")},
+            inverseJoinColumns={@JoinColumn(name="UTILITY_ID")})
+    //@Filter(name="utilityTrue")
     private List<Utility> propertyUtilities;
+
+
     //@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OneToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name="property_photos_junction", joinColumns={@JoinColumn(name="PROPERTY_ID")},inverseJoinColumns={@JoinColumn(name = "PHOTO_ID") })
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    //@LazyCollection(LazyCollectionOption.TRUE)
+    @JoinTable(name="property_photos_junction",
+            joinColumns={@JoinColumn(name="PROPERTY_ID")},
+            inverseJoinColumns={@JoinColumn(name = "PHOTO_ID") })
     private List<Photo> propertyPhotos;
 
 
@@ -64,8 +88,13 @@ public class Property {
         this.category = category;
     }
 
+    public PostStatuss getPostStatuss() {
+        return postStatuss;
+    }
 
-
+    public void setPostStatuss(PostStatuss postStatuss) {
+        this.postStatuss = postStatuss;
+    }
 
     public String getPropertyDescription() {
         return propertyDescription;
@@ -131,9 +160,12 @@ public class Property {
         this.propertyPhotos = propertyPhotos;
     }
 
+
+
+
     public String toString() {
-        return "Property Id: " + propertyId + ", Property description: " + propertyDescription + ", Category: " +
-                category +  ", Property owners: "
+        return "Property Id: " + propertyId + ", Property description: " + propertyDescription + ", Price: " + price + ", Category: "
+                +  ", Property owners: "
                 + propertyOwners + ", Property utilities: " +propertyUtilities +"\n";
                 //+ ", Who inserted this property into database: " + client;
     }

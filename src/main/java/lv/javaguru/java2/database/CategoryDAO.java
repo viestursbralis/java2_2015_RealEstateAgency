@@ -9,4 +9,6 @@ import lv.javaguru.java2.domain.CategoryName;
 public interface CategoryDAO {
 
     Category findCategoryByName(CategoryName categoryName) throws DBException;
+
+    Category findCategoryByStringName(String categoryName) throws DBException;
 }
