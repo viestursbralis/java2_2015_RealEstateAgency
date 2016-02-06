@@ -32,7 +32,7 @@ String catName = categoryName.toString();
 String sql = "select * from category where CATEGORY_SHORT_NAME like '%" +catName +"%' ";
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            //agent.setAgentStatuss(Statuss.valueOf(resultSet.getString("AGENT_STATUSS")));
+
                     ResultSet resultSet = preparedStatement.executeQuery();
 
             category.setCategoryName(categoryName);

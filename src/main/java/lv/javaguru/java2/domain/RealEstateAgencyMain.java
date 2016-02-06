@@ -6,6 +6,8 @@ package lv.javaguru.java2.domain;
 
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.database.jdbc.*;
+import lv.javaguru.java2.database.jdbc.AgentDAO;
+import lv.javaguru.java2.database.jdbc.PropertyDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,10 @@ import static lv.javaguru.java2.domain.Statuss.JUNIOR;
 
 
 public class RealEstateAgencyMain {
-    private static PropertyDAO propertyDao = new PropertyDAOImpl();
+    private static PropertyDAOImpl propertyDao = new PropertyDAOImpl();
+
     private static UserDAO userDao = new UserDAOImpl();
-    private static AgentDAO agentDao = new AgentDAOImpl();
+    private static AgentDAOImpl agentDao = new AgentDAOImpl();
     private static PropertyOwnerDAO propertyOwnerDao= new PropertyOwnerDAOImpl();
     private static JunctionDAO junctionDao = new JunctionDAOImpl();
     private static UtilityDAO propertyUtilityDao = new UtilityDAOImpl();

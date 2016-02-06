@@ -58,33 +58,7 @@ public class SeeWaitingListDetailsController {//Ajax controller;
     private UtilityDAO utilityDao;
 
 
-    //@RequestMapping(value="/seeDetailsFromWaitingList/{ID}", method={RequestMethod.GET}, headers="Accept=*/*", produces = "application/json")
-    /*public @ResponseBody Property execute(@PathVariable(value="ID") Long ID ){//ID - in this case this is a property ID;
 
-        Property propertyToShow = new Property();
-
-        try {
-            Property propertyToSee = propertyDao.findPropertyByIdWithAllLazyLists(ID);
-            propertyToShow.setPropertyId(propertyToSee.getPropertyId());
-            propertyToShow.setCategory(propertyToSee.getCategory());
-            propertyToShow.setPropertyDescription(propertyToSee.getPropertyDescription());
-            propertyToShow.setPrice(propertyToSee.getPrice());
-            propertyToShow.setAdress(propertyToSee.getAdress());
-            propertyToShow.setArea(propertyToSee.getArea());
-            propertyToShow.setCountOfBedrooms(propertyToSee.getCountOfBedrooms());
-            propertyToShow.setLandArea(propertyToSee.getLandArea());
-            propertyToShow.setPropertyOwners(propertyToSee.getPropertyOwners());
-            propertyToShow.setPropertyUtilities(propertyToSee.getPropertyUtilities());
-            propertyToShow.setPropertyPhotos(propertyToSee.getPropertyPhotos());
-           // propertyToShow.setClient(propertyToSee.getClient());
-
-        }  catch (DBException e) {
-            System.out.println("Error!");
-        }
-
-        return propertyToShow;
-
-    }*/
 
     @RequestMapping(value="/propertyApproveForm", method={RequestMethod.GET}, headers="Accept=*/*")
     public Model execute(@RequestParam("ID") Long ID, Model model, HttpServletRequest request ) {//ID - in this case this is a property ID;

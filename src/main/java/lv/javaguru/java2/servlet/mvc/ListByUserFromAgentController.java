@@ -26,45 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
-/*public class ListByUserFromAgentController  implements TransactionalController{//Ajax controller;
-
-    @Autowired
-    @Qualifier("ORM_PropertyDAO")
-    private PropertyDAO propertyDao;
-
-    @Autowired
-    @Qualifier("ORM_UserDAO")
-    private UserDAO userDao;
-
-
-    @RequestMapping(value="listAllPropertiesOfThisUserFromAgent", method={RequestMethod.GET})
-    public  MVCModel execute(HttpServletRequest request) {
-
-
-        String idToSee0 = request.getParameter("ID");//ID of user which property list we want to see;
-         Long idToSee = Long.parseLong(String.valueOf(idToSee0));
-
-
-        User user = new User();
-        List<Property>propertiesOfThisUser=new ArrayList<>();
-        try {
-            user = userDao.getUserById(idToSee);
-            if (user != null) {
-                propertiesOfThisUser = propertyDao.findPropertyByClient(user);
-                user.setListOfProperties(propertiesOfThisUser);
-
-            }
-        }  catch (DBException e) {
-            System.out.println("Error!");
-        }
-
-        return new MVCModel (propertiesOfThisUser, "listUsersByAgents.jsp");
-
-    }
-
-}*/
 @Component
 @RestController
 @Transactional

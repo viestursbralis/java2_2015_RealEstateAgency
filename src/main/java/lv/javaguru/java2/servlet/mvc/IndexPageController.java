@@ -11,16 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-/*public class IndexPageController implements TransactionalController {
 
-    public MVCModel execute(HttpServletRequest request) {
-
-
-
-        return new MVCModel("Index page", "/index.jsp");
-    }
-
-}*/
 @Transactional
 public class IndexPageController {
 

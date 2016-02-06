@@ -22,46 +22,7 @@ import javax.servlet.http.HttpSession;
 
 
 @Controller
-/*public class SearchForSpecificUserController implements TransactionalController {
 
-    @Autowired
-    @Qualifier("ORM_UserDAO")
-    private UserDAO userDao;
-
-    @Autowired
-    @Qualifier("ORM_PropertyDAO")
-    private PropertyDAO propertyDao;
-
-
-@RequestMapping(value="searchForSpecificUser", method={ReguestMethod.GET})
-    public MVCModel execute(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-
-        if(request.getParameter("openSearchBox")!=null&&request.getParameter("openSearchBox").equals("openSearchBox")){
-            session.setAttribute("openUserSearchPopUp", "true");
-
-
-        }
-
-        if(request.getParameter("userParameter")!=null) {
-            try {
-                User user = userDao.findUserLike(request.getParameter("userParameter"));
-                session.setAttribute("user", user);
-
-
-            }catch (DBException e) {
-                System.out.println("Error!");
-            }
-
-
-
-        }
-
-
-        return new MVCModel("Login data", "/juniorAgentLoggedInFirstPage1.jsp");
-    }
-
-}*/
 @Transactional
 public class SearchForSpecificUserController {
 

@@ -48,9 +48,6 @@ public class BigSearchController {//Ajax controller;
     @ResponseBody
     List<Property> execute(HttpServletRequest request) throws DBException {
 
-        // double minPrice, double maxPrice, int minBedrooms, int maxBedrooms,
-        // Long minLandArea, Long maxLandArea, Long minArea, Long maxArea,
-        //        List< Utility > utilities, String address, Category category
 
 
         List<String> searchCriteria = new ArrayList<>();

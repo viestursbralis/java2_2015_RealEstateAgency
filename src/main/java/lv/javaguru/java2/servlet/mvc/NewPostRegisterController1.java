@@ -93,11 +93,6 @@ public class NewPostRegisterController1  {
 
 
 
-                //session.setAttribute("ownerFirstName", request.getParameter("firstName"));
-                //session.setAttribute("ownerLastName", request.getParameter("lastName"));
-                //session.setAttribute("ownerEmail", request.getParameter("email"));
-                //session.setAttribute("ownerPhone", request.getParameter("phone"));
-
 
                 return new ModelAndView("newUtilityRegister", "model", null);
             }
@@ -182,13 +177,7 @@ public class NewPostRegisterController1  {
             property.setCountOfBedrooms(Integer.parseInt((String)session.getAttribute("countOfBedrooms")));
             property.setLandArea((Long.parseLong((String)session.getAttribute("landArea"))));
             property.setPostStatuss(PostStatuss.WAITING);
-            //PropertyOwner owner = new PropertyOwner();
-           // List<PropertyOwner>propertyOwners=new ArrayList<>();
-            //owner.setFirstName((String)session.getAttribute("ownerFirstName"));
-            //owner.setLastName((String)session.getAttribute("ownerLastName"));
-            //owner.setOwnerEmail((String)session.getAttribute("ownerEmail"));
-           // owner.setOwnerPhone((String)session.getAttribute("ownerPhone"));
-           // propertyOwners.add(owner);
+
              List<PropertyOwner>owners = (List<PropertyOwner>)session.getAttribute("ownerList");
             property.setPropertyOwners(owners);
 

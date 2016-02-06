@@ -71,28 +71,7 @@ public class  PropertyDAOImpl implements PropertyDAO {
         Hibernate.initialize(prop.getPropertyOwners());
         Hibernate.initialize(prop.getPropertyPhotos());
         Hibernate.initialize(prop.getPropertyUtilities());
-       /* List<Utility> utils = prop.getPropertyUtilities();
-        System.out.println("Util list from hibernate before tweaking:");
-        System.out.println(utils.toString());
 
-        List<Utility>allUtilities = utilityDao.getAllUtilities();
-        for(int i=0; i<allUtilities.size(); i++){
-            Long id = allUtilities.get(i).getUtilityId();
-            for(Utility u:utils){Long shortId = u.getUtilityId();
-            if (id==shortId){allUtilities.get(i).setChecked(true);}
-
-            }
-        }
-utils.clear();
-
-        utils=allUtilities;
-
-
-        System.out.println("Util list from hibernate after tweaking :");
-        System.out.println(utils.toString());
-
-        prop.setPropertyUtilities(utils);
-        System.out.println("Property from hibernate: "+prop.toString());*/
         return prop;
     }
     @Override
@@ -208,12 +187,7 @@ public List<Property> findPropertyByClientId(Long clientId) throws DBException{
     }
 
 
-    /*@Override
-    public void delete(Long id) throws DBException {
-        Session session = sessionFactory.getCurrentSession();
-        Property property = (Property) session.get(Property.class, id);
-        session.delete(property);
-    }*/
+
 
     @Override
     public void delete(Long ID){
@@ -270,7 +244,7 @@ public List<Property> findPropertyByClientId(Long clientId) throws DBException{
                 if(minPrice!=0 && maxPrice !=0){
                     criteria.add(Restrictions.between("price", minPrice, maxPrice));
                 }
-               /* if (minPrice!=0 && maxPrice==0){
+               if (minPrice!=0 && maxPrice==0){
                     criteria.add(Restrictions.ge("price", minPrice));
                 }
                 if (minPrice==0 && maxPrice!=0){
@@ -308,11 +282,14 @@ public List<Property> findPropertyByClientId(Long clientId) throws DBException{
                 }
 
                 //.add(Restrictions.between("area", minArea, maxArea))
+
+        //utility restriction does not work due to lazy initialization of utility collection  - at this point there are no
+        //utility collection asociated with object
                 //.add(Restrictions.eq("propertyUtilities", utilities))
                 if (!address.equals("")){
                  criteria.add(Restrictions.like("adress", address));
                 }
-*/
+
         criteria.add(Restrictions.eq("postStatuss", PostStatuss.APPROVED));
                 List<Property> propertiesToShow = new ArrayList<>();
         List<Property>properties = criteria.add(Restrictions.eq("category", category))
@@ -406,42 +383,6 @@ public List<Property> findPropertyByClientId(Long clientId) throws DBException{
             utilIds.add(utilsSubset.get(i).getUtilityId());
 
         }
-/*
-        //DetachedCriteria.forClass(Property.class).createAlias("propertyUtilities", "propUtils");
-        criteria.createAlias("propertyUtilities", "propUtils");
-        for(Utility u:utilsSubset){
-
-            criteria.add(Restrictions.eq("propUtils.utilityDescription",u.getUtilityDescription() ));
-        }
-*/
-
-
-
-
-
-
-       /* int size = utils.size();
-        String[]utilDescriptions = new String[size];
-
-        for(int i=0; i<size; i++){
-
-            utilDescriptions[i]= utils.get(i).getUtilityDescription();
-
-
-        }
-        criteria.createAlias("propertyUtilities", "propUtils");
-        //criteria.createAlias("propUtils.utilityDescription", "utilDesc");
-        criteria.add(Restrictions.in("propUtils.utilityDescription", utilDescriptions));*/
-                //.add(Restrictions.eq("propertyUtilities", utilities))
-/*criteria.createAlias("propertyUtilities", "utilList");
-        Junction junc = Restrictions.conjunction();
-        for(Utility u:utils){
-            junc.add(Restrictions.eq("utilList.propertyId", u.getUtilityId()));
-
-
-        }
-        criteria.add(junc);*/
-
 
 
          String address = (String)searchCriteriaMap.get("address");

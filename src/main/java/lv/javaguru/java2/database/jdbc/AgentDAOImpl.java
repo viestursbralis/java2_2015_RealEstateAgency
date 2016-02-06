@@ -220,11 +220,7 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
         /**********************************************************************************************/
         public Long[] findLessBusyAgentID()throws DBException {
             Long[] agentIndex = new Long[2];
-            // String sql ="SELECT AGENT_ID, COUNT(*) AS count FROM property GROUP BY AGENT_ID ORDER BY count ASC LIMIT 1";
-//returning an agent ID with lowest property score;
 
-        /*String sql = "SELECT agent.AGENT_ID, (SELECT count(*) FROM property WHERE property.AGENT_ID=agent.AGENT_ID)" +
-                "as appears FROM agent ORDER BY appears ASC LIMIT 1";*/
             String sql = "SELECT agent.AGENT_ID, (SELECT count(*) FROM users WHERE users.AGENT_ID=agent.AGENT_ID)" +
                     "as appears FROM agent ORDER BY appears ASC LIMIT 1";
 
@@ -256,9 +252,6 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
     public Agent findLessBusyAgent()throws DBException {
         Agent agent = new Agent();
 
-
-        /*String sql = "SELECT agent.AGENT_ID, (SELECT count(*) FROM property WHERE property.AGENT_ID=agent.AGENT_ID)" +
-                "as appears FROM agent ORDER BY appears ASC LIMIT 1";*/
 
         String sql = "SELECT agent.AGENT_ID, (SELECT count(*) FROM users WHERE users.AGENT_ID=agent.AGENT_ID)" +
                 "as appears FROM agent ORDER BY appears ASC LIMIT 1";
@@ -294,8 +287,7 @@ public class AgentDAOImpl  extends DAOImpl implements AgentDAO {
 public List<Agent> findLessBusyAgentList()throws DBException {
     Long resultset = null;
     List<Agent> agentList = new ArrayList<>();
-    // String sql ="SELECT AGENT_ID, COUNT(*) AS count FROM property GROUP BY AGENT_ID ORDER BY count ASC LIMIT 1";
-//returning an agent ID with lowest property score;
+
 
     String sql ="SELECT agent.AGENT_ID, (SELECT count(*) FROM property WHERE property.AGENT_ID=agent.AGENT_ID)" +
             "as appears FROM agent";

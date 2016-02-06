@@ -22,9 +22,9 @@ public interface AgentDAO {
 
     Agent findAgentByCredentials(String username, String password)throws DBException;
 
-    //Long[] findLessBusyAgentID() throws DBException;
+
 
     Agent findLessBusyAgent() throws DBException;
 
-    //List<Agent> findLessBusyAgentList()throws DBException;
+
 }

@@ -44,16 +44,6 @@
 
 
 
-        //alert("url:"+url);
-        /* var params = get_params_from_href(href);
-         var arr = {};
-
-
-         for (var key in params) {
-         var value = params[key];
-         alert("key:"+key +" value:"+value);
-         }*/
-
         alert(url+"/"+data);
         $.ajax({
           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -61,11 +51,7 @@
           type: "GET",
           url: url+"/"+data,
 
-          /*beforeSend: function(xhr) {
-           xhr.setRequestHeader("Accept", "application/json");
-           xhr.setRequestHeader("Content-Type", "application/json");
-           },*/
-          //data:JSON.stringify(data),
+
           cache: false,
           success: function (response) {
             alert("alert from success");
@@ -75,15 +61,7 @@
 
             $("#responsis").empty();
 
-           <%-- $("#responsis").append("<tr><td>Description</td><td>Price</td><td>Area</td><td>Land Area</td></tr>");
 
-
-
-              $("#responsis").append("<tr><td>"+response.propertyDescription+"</td><td>"
-                      + response.price + "</td><td>"
-                      + response.area + "</td><td>"
-
-                      + response.landArea + "</td></tr>");--%>
 $("#responsis").append("<tr><td>Property Id: </td><td>"+response.propertyId+"</td></tr><tr><td>Property description: </td><td>"+response.propertyDescription+"</td>" +
         "<td></td></tr><tr><td>Price: </td><td>"+response.price+"</td><td></td></tr><tr><td>Adress: </td><td>"+response.adress+"</td>" +
         "<td></td></tr><tr><td>Living area: </td><td>"+response.area+"</td><td></td></tr><tr><td>Count of bedrooms: </td><td>"+response.countOfBedrooms+ "</td>" +

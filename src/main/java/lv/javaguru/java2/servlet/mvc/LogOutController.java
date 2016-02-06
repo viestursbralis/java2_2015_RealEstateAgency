@@ -11,19 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-/*public class LogOutController implements TransactionalController {
 
-
-    public MVCModel execute(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.invalidate();
-
-
-
-        return new MVCModel("Log out data", "/index.jsp");
-    }
-
-}*/
 @Transactional
 public class LogOutController  {
 

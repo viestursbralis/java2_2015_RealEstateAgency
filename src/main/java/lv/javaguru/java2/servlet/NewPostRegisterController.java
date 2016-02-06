@@ -6,6 +6,7 @@ package lv.javaguru.java2.servlet;
 
 import lv.javaguru.java2.database.*;
 import lv.javaguru.java2.database.jdbc.*;
+import lv.javaguru.java2.database.jdbc.PropertyDAO;
 import lv.javaguru.java2.domain.*;
 
 import javax.servlet.RequestDispatcher;
@@ -137,9 +138,10 @@ List<Long>utilities=new ArrayList<>();
             System.out.println("Error!");
         }
 /*********************************************************************************************************/
-    PropertyDAO propertyDao=new PropertyDAOImpl();
+    PropertyDAOImpl propertyDao= new PropertyDAOImpl();
         Long lastPropertyID=null;
         try {
+
             lastPropertyID = propertyDao.createProperty(property);//save property into database and
         }catch (DBException e) {
             System.out.println("Error!");

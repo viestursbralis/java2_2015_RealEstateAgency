@@ -7,14 +7,13 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% String resPath = request.getContextPath()+"/resources/static/css";%>
+
 
 
 <html>
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
- <%-- <link rel="stylesheet" type="text/css" href="<%=resPath%>/genStyles.css">
-  <link rel="stylesheet" type="text/css" href="<%=resPath%>/fieldsetStyles.css">--%>
+
 
   <title></title>
 </head>
@@ -92,15 +91,7 @@ alert("Serialized data are:" +data);
         url: url+"/"+data,
         success: function (response) {
 $("#dialog").empty();
-          <%-- $("#responsis").append("<tr><td>Description</td><td>Price</td><td>Area</td><td>Land Area</td></tr>");
 
-
-
-              $("#responsis").append("<tr><td>"+response.propertyDescription+"</td><td>"
-                      + response.price + "</td><td>"
-                      + response.area + "</td><td>"
-
-                      + response.landArea + "</td></tr>");--%>
           $("#dialog").append("<tr><td>Property Id: </td><td>"+response.propertyId+"</td></tr><tr><td>Property description: </td><td>"+response.propertyDescription+"</td>" +
                   "<td></td></tr><tr><td>Price: </td><td>"+response.price+"</td><td></td></tr><tr><td>Adress: </td><td>"+response.adress+"</td>" +
                   "<td></td></tr><tr><td>Living area: </td><td>"+response.area+"</td><td></td></tr><tr><td>Count of bedrooms: </td><td>"+response.countOfBedrooms+ "</td>" +

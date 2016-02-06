@@ -60,8 +60,8 @@ public class MailConfig {
 
         javaMailSender.setHost(host1);
         javaMailSender.setPort(port1);
-        javaMailSender.setUsername("viesturs.bralis@gmail.com");
-        javaMailSender.setPassword("sebastians");
+        javaMailSender.setUsername("realestateagencyjava2@gmail.com");
+        javaMailSender.setPassword("agency123");
 
 
         javaMailSender.setJavaMailProperties(getMailProperties());

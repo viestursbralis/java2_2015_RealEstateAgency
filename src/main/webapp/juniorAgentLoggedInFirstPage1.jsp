@@ -10,14 +10,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 
-<% String resPath = request.getContextPath()+"/resources/static/css";%>
+
 
 
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-   <%-- <link rel="stylesheet" type="text/css" href="<%=resPath%>/genStyles.css">
-    <link rel="stylesheet" type="text/css" href="<%=resPath%>/fieldsetStyles.css">--%>
+
 
   <title></title>
 </head>
@@ -119,63 +118,8 @@
             alert("Alert from approval form success!");
 
             $("#dialog").append(response);
-<%--
-          $("#dialog").empty();
-            $("#form1").empty();
-            $("#dialog").append("<form id='form1' action='' method='GET'></form>");
-
-            $("#form1").append("<p>ID:<input type='text' name='ID' value=" + response.propertyId + "></p>");
-            $("#form1").append("<p>Category:<input type='text' name='categoryName' value=" + response.category.categoryName + "></p>");
-            $("#form1").append("<p>Description:<input type='text' name='description' value=" + response.propertyDescription + "></p>");
-            $("#form1").append("<p>Price:<input type='text' name='price' value=" + response.price + "></p>");
-            $("#form1").append("<p>Adress:<input type='text' name='adress' value=" + response.adress + "></p>");
-            $("#form1").append("<p>Area:<input type='text' name='area' value=" + response.area + "></p>");
-            $("#form1").append("<p>Count of bedrooms:<input type='text' name='bedrooms' value=" + response.countOfBedrooms + "></p>");
-            $("#form1").append("<p>Land area:<input type='text' name='landArea' value=" + response.landArea + "></p>");
 
 
-
-
-
-
-          for (var i=0; i < response.propertyOwners.length; i++) {
-$("#form1").append("<p>Owner Nr."+i+ " details:</p>");
-
-              var ownerId = "ownerId"+i;
-              var ownerFirstName = "ownerFirstName"+i;
-              var ownerLastName= "ownerLastName"+i;
-              var ownerEmail = "ownerEmail"+i;
-              var ownerPhone = "ownerPhone"+i;
-              alert(ownerId);
-              $("#form1").append("<p>Owner Id:<input type='text' name = '"+ ownerId +"' value="+response.propertyOwners[i].id  +"></p>");
-              $("#form1").append("<p>Owner first name:<input type='text' name = '"+ ownerFirstName +"' value="+response.propertyOwners[i].firstName + "></p>");
-              $("#form1").append("<p>Owner last name:<input type='text' name = '"+ ownerLastName +"' value="+response.propertyOwners[i].lastName +"></p>");
-              $("#form1").append("<p>Owner email:<input type='text' name = '"+ ownerEmail +"' value="+response.propertyOwners[i].ownerEmail+"></p>");
-              $("#form1").append("<p>Owner phone:<input type='text' name = '"+ ownerPhone +"' value="+response.propertyOwners[i].ownerPhone+"></p>");
-
-          };
-
-          $("#form1").append("<p>List of utilities:</p>");
-
-          for (var i=0; i < response.propertyUtilities.length; i++) {
-
-            $("#form1").append("<label for='"+response.propertyUtilities[i].utilityDescription+"'>"+response.propertyUtilities[i].utilityDescription+" </label>");
-          $("#form1").append("<input type='checkbox' value='"+response.propertyUtilities[i].utilityDescription+"' name='"+response.propertyUtilities[i].utilityDescription+"' id='"+response.propertyUtilities[i].utilityDescription+"' checked='checked' />");
-
-
-          };
-$("#form1").append("<p>List of photos:</p>");
-            for (var i=0; i < response.propertyPhotos.length; i++) {
-
-                $("#form1").append("<p>Photo:</p><p><img src=PropertyPhotos/"+response.propertyPhotos[i].photoName+" width='160' height='160'> </p>");
-                $("#form1").append("<input type='checkbox' value='"+response.propertyPhotos[i].photoName+"' name='"+response.propertyPhotos[i].photoName+"' id='"+response.propertyPhotos[i].photoName+"' checked='checked' />");
-
-
-            };
-
-        $("#form1").append("<input type='submit' name ='submitChanges' value='Submit changes!' />");
-            $("#form1").append("<input type='submit' id='delete' name ='delete' value='Delete!' />");
---%>
 
         },
         error: function (response){

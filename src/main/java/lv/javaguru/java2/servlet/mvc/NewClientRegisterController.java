@@ -23,64 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-/*public class NewClientRegisterController implements TransactionalController {
 
-    @Autowired
-    AgentDAO agentDao;
-    @Autowired @Qualifier("ORM_UserDAO")
-    UserDAO userDao;
-
-
-    public MVCModel execute(HttpServletRequest request) {
-
-        if (request.getMethod() == "GET") {
-
-            return new MVCModel("Login data", "/newClientRegister.jsp");
-        }
-
-        if (request.getMethod() == "POST") {
-
-
-            String userFirstName = request.getParameter("firstName");
-            String userLastName = request.getParameter("lastName");
-            String userEmail = request.getParameter("email");
-            String userPassword = request.getParameter("password");
-
-
-
-            User newUser= new User();
-            Agent lessBusyAgent = new Agent();
-            try {
-                lessBusyAgent = agentDao.findLessBusyAgent();
-            }catch (DBException e) {
-                System.out.println("Error!");
-            }
-
-            newUser.setFirstName(userFirstName);
-            newUser.setLastName(userLastName);
-            newUser.setUserEmail(userEmail);
-            newUser.setPassword(userPassword);
-            newUser.setStatuss(Statuss.CLIENT);
-            newUser.setAgent(lessBusyAgent);
-            String agentFirstName=newUser.getAgent().getAgentFirstName();
-            String agentLastName=newUser.getAgent().getAgentLastName();
-            try {
-                userDao.createNewUserInDatabase(newUser);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("userFirstName", userFirstName);
-                session.setAttribute("userLastName", userLastName);
-                session.setAttribute("agentFirstName", agentFirstName);
-                session.setAttribute("agentLastName", agentLastName);
-
-            } catch (DBException e) {
-                System.out.println("Error!");
-            }
-            return new MVCModel("Login data", "/clientLoggedInFirstPage.jsp");
-        }
-        return new MVCModel("Login data", "/index.jsp");
-    }
-}*/
 @Transactional
 public class NewClientRegisterController  {
 
@@ -89,15 +32,6 @@ public class NewClientRegisterController  {
     AgentDAO agentDao;
     @Autowired @Qualifier("ORM_UserDAO")
     UserDAO userDao;
-
-/*@RequestMapping(value="newClientRegister", method={RequestMethod.GET})
-    public ModelAndView executeGet(HttpServletRequest request, HttpServletResponse repsonse) {
-
-
-
-            return new ModelAndView("newClientRegister", "model", null);
-        }*/
-
 
     @RequestMapping(value="newClientRegister1", method={RequestMethod.GET}, headers = "Accept=*/*", produces = "application/json" )
     public @ResponseBody Model getUserRegistrationForm(Model model) {
@@ -108,47 +42,7 @@ model.addAttribute("userRegisterModel", new User());
 
 
 
-    /*@RequestMapping(value="newClientRegister", method={RequestMethod.POST})
-    public ModelAndView executePost(HttpServletRequest request, HttpServletResponse repsonse) {
 
-
-            String userFirstName = request.getParameter("firstName");
-            String userLastName = request.getParameter("lastName");
-            String userEmail = request.getParameter("email");
-            String userPassword = request.getParameter("password");
-
-
-
-            User newUser= new User();
-            Agent lessBusyAgent = new Agent();
-            try {
-                lessBusyAgent = agentDao.findLessBusyAgent();
-            }catch (DBException e) {
-                System.out.println("Error!");
-            }
-
-            newUser.setFirstName(userFirstName);
-            newUser.setLastName(userLastName);
-            newUser.setUserEmail(userEmail);
-            newUser.setPassword(userPassword);
-            newUser.setStatuss(Statuss.CLIENT);
-            newUser.setAgent(lessBusyAgent);
-            String agentFirstName=newUser.getAgent().getAgentFirstName();
-            String agentLastName=newUser.getAgent().getAgentLastName();
-            try {
-                userDao.createNewUserInDatabase(newUser);
-
-                HttpSession session = request.getSession();
-                session.setAttribute("userFirstName", userFirstName);
-                session.setAttribute("userLastName", userLastName);
-                session.setAttribute("agentFirstName", agentFirstName);
-                session.setAttribute("agentLastName", agentLastName);
-
-            } catch (DBException e) {
-                System.out.println("Error!");
-            }
-            return new ModelAndView("clientLoggedInFirstPage1", "model", null);
-        }*/
 
     @RequestMapping(value="newClientRegister", method={RequestMethod.POST})
     public ModelAndView processUserRegistrationForm(@ModelAttribute User user, HttpServletRequest request) {

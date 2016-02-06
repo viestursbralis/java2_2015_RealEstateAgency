@@ -12,24 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-/*public class ReturnToFirstPageController implements TransactionalController {
 
-
-    public MVCModel execute(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Statuss statuss = (Statuss)session.getAttribute("status");
-
-        switch(statuss) {
-            case CLIENT:
-                return new MVCModel("Login data", "/clientLoggedInFirstPage1.jsp");
-            case JUNIOR:
-                return new MVCModel("Login data", "/juniorAgentLoggedInFirstPage1.jsp");
-        }
-
-        return new MVCModel("Login data", "/index.jsp");
-    }
-
-}*/
 @Transactional
 public class ReturnToFirstPageController  {
 

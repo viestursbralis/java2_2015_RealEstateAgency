@@ -49,15 +49,6 @@
 
 
 
-              //alert("url:"+url);
-     /* var params = get_params_from_href(href);
-var arr = {};
-
-
-    for (var key in params) {
-      var value = params[key];
-      alert("key:"+key +" value:"+value);
-    }*/
 
       alert(url+"/"+data);
       $.ajax({
@@ -66,11 +57,7 @@ var arr = {};
         type: "GET",
        url: url+"/"+data,
 
-        /*beforeSend: function(xhr) {
-          xhr.setRequestHeader("Accept", "application/json");
-          xhr.setRequestHeader("Content-Type", "application/json");
-        },*/
-      //data:JSON.stringify(data),
+
         cache: false,
         success: function (response) {
           alert("alert from success");

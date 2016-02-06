@@ -156,15 +156,7 @@
   <form id="quickSearch" action="<%=request.getContextPath()%>/quickSearch" method = "GET">
     Enter a property ID:<input type="text" id="quickSearchId" name="ID"/><br/>
     <input type="hidden" name="quickSearch" value="true"/>
-    <%--<a href="javascript:child_open()">Click me</a>
-    <script type="text/javascript">
-      var popupWindow=null;
-      function child_open()
-      {
-        popupWindow =window.open('propertyDetailsPopUp.jsp',"_blank","directories=no, status=no, menubar=no, scrollbars=yes, resizable=no,width=600, height=280,top=200,left=200");
-      }
 
-    </script>--%>
 
     <input type="submit" id="qSearchSubmit" value="Search!" />
   </form>
